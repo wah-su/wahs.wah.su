@@ -28,7 +28,7 @@ export default function head(props: {
       <meta property="og:url" content={`${props.url}${props.path}`} />
       {props.preload ? props.preload.map((item) => <link key={`preload_${item}`} rel="preload" href={item} as="fetch"></link>) : ""}
       {props.dns ? props.dns.map((item) => <link key={`dns_${item}`} rel="dns-prefetch" href={item} />) : ""}
-      {/* <meta property="og:logo" content="<%- baseUrl %><%= path %>/static/images/logo-1x.png" /> */}
+      <meta property="og:logo" content={`${props.url}/static/logo-1x.png`} />
       {props.environment == "dev" ? (
         <script src="./static/dev/hotreload.js"></script>
       ) : (

@@ -117,10 +117,10 @@ let html = renderToString(
   <IndexPage
     title="Wah-Collection"
     environment={environment}
+    path="/"
     head={{
       description: "Home page of Wah-Collection by @radiquum",
       image: "https://s3.tebi.io/wahs.wah.su/red_panda/1928. bqiKzsaDPlw.jpg",
-      path: "/",
       url: process.env.WEB_URL as string,
       preload: [
         `${environment == "prod" ? process.env.WEB_URL : "."}/data/images.json`,
