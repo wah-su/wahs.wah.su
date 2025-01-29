@@ -33,7 +33,7 @@ export class Log {
     return `${time}:${level} - ${message}`;
   }
 
-  debug(message: string, isConnected = false) {
+  debug(message: string | any, isConnected = false) {
     if (this._level == 0) {
       if (isConnected) {
         message = `↳ ${message}`;
@@ -43,7 +43,7 @@ export class Log {
     }
   }
 
-  info(message: string, isConnected = false) {
+  info(message: string | any, isConnected = false) {
     if (this._level <= 1) {
       if (isConnected) {
         message = `↳ ${message}`;
@@ -53,7 +53,7 @@ export class Log {
     }
   }
 
-  warn(message: string, isConnected = false) {
+  warn(message: string | any, isConnected = false) {
     if (this._level <= 2) {
       if (isConnected) {
         message = `↳ ${message}`;
@@ -63,7 +63,7 @@ export class Log {
     }
   }
 
-  error(message: string, isConnected = false) {
+  error(message: string | any, isConnected = false) {
     if (this._level <= 3) {
       if (isConnected) {
         message = `↳ ${message}`;
