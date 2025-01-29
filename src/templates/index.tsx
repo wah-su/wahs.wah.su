@@ -24,7 +24,13 @@ export default function Index(props: {
       />
       <body className="dark:bg-[#160606] text-[#f9ebeb]">
         <Header path={props.path}/>
-        nothing yet . . .
+        <div className="container mx-auto">
+            <div>
+                <p>Images</p>
+                <div id="index_images" className="flex flex-wrap gap-4"></div>
+            </div>
+        </div>
+      <script src="./static/populate_index.js"></script>
       </body>
     </html>
   );

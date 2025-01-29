@@ -34,7 +34,6 @@ export default function head(props: {
       ) : (
         ""
       )}
-      {/* <script src="./static/functions.js"></script> */}
     </head>
   );
 }

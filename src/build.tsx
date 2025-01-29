@@ -1,4 +1,7 @@
 import { Log } from "./utils";
+import { renderToString } from "react-dom/server";
+import IndexPage from "./templates/index";
+import fs from "fs";
 
 const environment: "prod" | "dev" =
   (process.env.ENVIRONMENT as "prod" | "dev") || "prod";
@@ -43,9 +46,9 @@ async function listAllObjects(bucketName: string, prefix: string) {
         if (item.Key != undefined) {
           const ext = item.Key.split(".")[item.Key.split(".").length - 1];
           if (["png", "jpg", "jpeg"].includes(ext.toLowerCase())) {
-            images.push(item.Key);
+            images.push(`${process.env.ENDPOINT}/${process.env.BUCKET}/${item.Key}`);
           } else if (["mp4"].includes(ext.toLowerCase())) {
-            videos.push(item.Key);
+            videos.push(`${process.env.ENDPOINT}/${process.env.BUCKET}/${item.Key}`);
           }
         }
       });
@@ -87,32 +90,6 @@ if (!fs.existsSync("out/data/videos.json")) {
   fs.writeFileSync("out/data/videos.json", JSON.stringify(videos));
 }
 
-import { renderToString } from "react-dom/server";
-import IndexPage from "./templates/index";
-import fs from "fs";
-// function App(props: {}) {
-//   return (
-//     <html>
-//       <head>
-//         <link href="./static/tailwind.css" rel="stylesheet" />
-//         {environment == "dev" ? (
-//           <script src="./static/dev/hotreload.js"></script>
-//         ) : (
-//           ""
-//         )}
-//         <title>Bun Render Test</title>
-//       </head>
-//       <body>
-//         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((el) => (
-//           <div key={el} className="flex flex-wrap gap-8">
-//             <p className="text-6xl text-red-400">{el}</p>
-//             <p className="text-8xl text-green-400">{el * 2}</p>
-//           </div>
-//         ))}
-//       </body>
-//     </html>
-//   );
-// }
 let html = renderToString(
   <IndexPage
     title="Wah-Collection"
@@ -126,7 +103,7 @@ let html = renderToString(
         `${environment == "prod" ? process.env.WEB_URL : "."}/data/images.json`,
         `${environment == "prod" ? process.env.WEB_URL : "."}/data/videos.json`,
       ],
-      dns: [process.env.ENDPOINT as string],
+      dns: [process.env.ENDPOINT as string, "https://wsrv.nl"],
     }}
   />
 );
