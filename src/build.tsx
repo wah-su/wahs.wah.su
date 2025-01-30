@@ -112,4 +112,4 @@ fs.cpSync("src/static", "out/static", { recursive: true });
 if (environment == "dev") {
   fs.cpSync("src/static_dev", "out/static/dev", { recursive: true });
 }
-fs.writeFileSync("out/index.html", html);
+fs.writeFileSync("out/index.html", `<!DOCTYPE html>${html}`);
