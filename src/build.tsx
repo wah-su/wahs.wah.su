@@ -96,7 +96,7 @@ let html = renderToString(
     environment={environment}
     path="/"
     head={{
-      description: "Home page of Wah-Collection by @radiquum",
+      description: `Home page of Wah-Collection by @radiquum | ${images.length} Images | ${videos.length} Videos | ${images.length + videos.length} Total`,
       image: "https://s3.tebi.io/wahs.wah.su/red_panda/1928. bqiKzsaDPlw.jpg",
       url: process.env.WEB_URL as string,
       preload: [

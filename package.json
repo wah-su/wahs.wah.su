@@ -20,5 +20,9 @@
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
+  "scripts": {
+    "dev": "bun run ./src/watch.ts",
+    "gen": "bun run ./src/build.tsx"
+  },
   "dependencies": {}
 }
