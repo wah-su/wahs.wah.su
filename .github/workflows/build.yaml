@@ -24,6 +24,7 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
+    environment: "env"
     steps:
       - name: Install bun
         uses: oven-sh/setup-bun@v2
@@ -40,7 +41,7 @@ jobs:
       - name: Install bun dependencies
         run: "bun install"
       - name: Build website
-        run: bun run gen
+        run: "bun run gen"
         env:
           ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
           SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
