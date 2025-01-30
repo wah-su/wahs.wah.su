@@ -21,14 +21,14 @@ export default function head(props: {
       <meta property="og:title" content={props.title} />
       <meta property="og:description" content={props.description} />
       <meta property="og:type" content="website" />
+      <meta property="og:url" content={`${props.url}${props.path}`} />
       <meta property="og:image" content={props.image} />
       <meta property="og:image:type" content={mimetype} />
       <meta property="og:image:alt" content="" />
-      <link href="/static/tailwind.css" rel="stylesheet" />
-      <meta property="og:url" content={`${props.url}${props.path}`} />
+      <meta property="og:logo" content={`${props.url}/static/logo-1x.png`} />
+      <link href={props.environment == "dev" ? "/static/tailwind.css" : "/static/tailwind.min.css"} rel="stylesheet" />
       {props.preload ? props.preload.map((item) => <link key={`preload_${item}`} rel="preload" href={item} as="fetch" crossOrigin="anonymous"></link>) : ""}
       {props.dns ? props.dns.map((item) => <link key={`dns_${item}`} rel="dns-prefetch" href={item} />) : ""}
-      <meta property="og:logo" content={`${props.url}/static/logo-1x.png`} />
       {props.environment == "dev" ? (
         <script src="./static/dev/hotreload.js"></script>
       ) : (

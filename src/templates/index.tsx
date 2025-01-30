@@ -56,7 +56,7 @@ export default function Index(props: {
             </div>
           </div>
         </div>
-        <script src="./static/populate_index.js"></script>
+        <script src={props.environment == "dev" ? "/static/populate_index.js" : "/static/populate_index.min.js"}></script>
       </body>
     </html>
   );

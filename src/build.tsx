@@ -2,6 +2,7 @@ import { Log } from "./utils";
 import { renderToString } from "react-dom/server";
 import IndexPage from "./templates/index";
 import fs from "fs";
+import exec from "child_process";
 
 const environment: "prod" | "dev" =
   (process.env.ENVIRONMENT as "prod" | "dev") || "prod";
@@ -46,9 +47,13 @@ async function listAllObjects(bucketName: string, prefix: string) {
         if (item.Key != undefined) {
           const ext = item.Key.split(".")[item.Key.split(".").length - 1];
           if (["png", "jpg", "jpeg"].includes(ext.toLowerCase())) {
-            images.push(`${process.env.ENDPOINT}/${process.env.BUCKET}/${item.Key}`);
+            images.push(
+              `${process.env.ENDPOINT}/${process.env.BUCKET}/${item.Key}`
+            );
           } else if (["mp4"].includes(ext.toLowerCase())) {
-            videos.push(`${process.env.ENDPOINT}/${process.env.BUCKET}/${item.Key}`);
+            videos.push(
+              `${process.env.ENDPOINT}/${process.env.BUCKET}/${item.Key}`
+            );
           }
         }
       });
@@ -96,7 +101,11 @@ let html = renderToString(
     environment={environment}
     path="/"
     head={{
-      description: `Home page of Wah-Collection by @radiquum | ${images.length} Images | ${videos.length} Videos | ${images.length + videos.length} Total`,
+      description: `Home page of Wah-Collection by @radiquum | ${
+        images.length
+      } Images | ${videos.length} Videos | ${
+        images.length + videos.length
+      } Total`,
       image: "https://s3.tebi.io/wahs.wah.su/red_panda/1928. bqiKzsaDPlw.jpg",
       url: process.env.WEB_URL as string,
       preload: [
@@ -111,5 +120,33 @@ let html = renderToString(
 fs.cpSync("src/static", "out/static", { recursive: true });
 if (environment == "dev") {
   fs.cpSync("src/static_dev", "out/static/dev", { recursive: true });
+} else {
+  log.info("Minifying resources...");
+  exec.exec(
+    "bun run tailwindcss -i src/input.css -o out/static/tailwind.min.css --build --minify",
+    (error, stdout, stderr) => {
+      if (error) {
+        log.error(error.message);
+        return;
+      }
+      if (stderr) {
+        log.error(stderr);
+        return;
+      }
+      log.info(stdout);
+    }
+  );
+
+  const transpiler = new Bun.Transpiler({
+    loader: "js",
+    target: "browser",
+    minifyWhitespace: true
+  });
+
+  const populate_index_file = fs.readFileSync("src/static/populate_index.js", {
+    encoding: "utf-8",
+  });
+  const populate_index_minified = transpiler.transformSync(populate_index_file);
+  fs.writeFileSync("out/static/populate_index.min.js", populate_index_minified);
 }
 fs.writeFileSync("out/index.html", `<!DOCTYPE html>${html}`);
