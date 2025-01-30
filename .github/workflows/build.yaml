@@ -47,6 +47,7 @@ jobs:
           SECRET_ACCESS_KEY: ${{ secrets.SECRET_ACCESS_KEY }}
           ENDPOINT: ${{ vars.ENDPOINT }}
           BUCKET: ${{ vars.BUCKET }}
+          PREFIX: ${{ vars.PREFIX }}
           WEB_URL: ${{ vars.WEB_URL }}
       # - name: cleanup
         # run: rm -rf .vscode && rm -rf .github && rm -rf src && rm -rf node_modules && rm -f tailwind.config.js && rm -f .gitignore && rm -f package.json && rm -f package-lock.json
