@@ -29,7 +29,11 @@ const S3 = new S3Client({
 
 let images: string[] = [];
 let videos: string[] = [];
-
+let config = {
+  endpoint: process.env.ENDPOINT,
+  bucket: process.env.BUCKET,
+  prefix: process.env.PREFIX
+}
 async function listAllObjects(bucketName: string, prefix: string) {
   let isTruncated: boolean = true;
   let continuationToken: string = "";
@@ -46,14 +50,11 @@ async function listAllObjects(bucketName: string, prefix: string) {
       response.Contents.forEach((item) => {
         if (item.Key != undefined) {
           const ext = item.Key.split(".")[item.Key.split(".").length - 1];
+          const obj = item.Key.split("/")[item.Key.split("/").length - 1];
           if (["png", "jpg", "jpeg"].includes(ext.toLowerCase())) {
-            images.push(
-              `${process.env.ENDPOINT}/${process.env.BUCKET}/${item.Key}`
-            );
+            images.push(obj);
           } else if (["mp4"].includes(ext.toLowerCase())) {
-            videos.push(
-              `${process.env.ENDPOINT}/${process.env.BUCKET}/${item.Key}`
-            );
+            videos.push(obj);
           }
         }
       });
@@ -66,8 +67,8 @@ async function listAllObjects(bucketName: string, prefix: string) {
 if (!fs.existsSync(".cache")) fs.mkdirSync(".cache");
 if (!fs.existsSync(".cache/objects.json")) {
   log.info("Listing all objects in S3 bucket . . .");
-  await listAllObjects(process.env.BUCKET as string, "red_panda");
-  fs.writeFileSync(".cache/objects.json", JSON.stringify({ images, videos }));
+  await listAllObjects(process.env.BUCKET as string, process.env.PREFIX as string);
+  fs.writeFileSync(".cache/objects.json", JSON.stringify({ config, images, videos }));
   log.info(
     `Total: ${images.length + videos.length} | ${images.length} Images | ${
       videos.length
@@ -78,6 +79,7 @@ if (!fs.existsSync(".cache/objects.json")) {
   const _cacheFile = fs.readFileSync(".cache/objects.json", {
     encoding: "utf-8",
   });
+  config = JSON.parse(_cacheFile)["config"]
   images = JSON.parse(_cacheFile)["images"];
   videos = JSON.parse(_cacheFile)["videos"];
   log.info(
@@ -88,6 +90,9 @@ if (!fs.existsSync(".cache/objects.json")) {
 }
 
 if (!fs.existsSync("out/data")) fs.mkdirSync("out/data");
+if (!fs.existsSync("out/data/config.json")) {
+  fs.writeFileSync("out/data/config.json", JSON.stringify(config));
+}
 if (!fs.existsSync("out/data/images.json")) {
   fs.writeFileSync("out/data/images.json", JSON.stringify(images));
 }
@@ -109,6 +114,7 @@ let html = renderToString(
       image: "https://s3.tebi.io/wahs.wah.su/red_panda/1928. bqiKzsaDPlw.jpg",
       url: process.env.WEB_URL as string,
       preload: [
+        `${environment == "prod" ? process.env.WEB_URL : "."}/data/config.json`,
         `${environment == "prod" ? process.env.WEB_URL : "."}/data/images.json`,
         `${environment == "prod" ? process.env.WEB_URL : "."}/data/videos.json`,
       ],
@@ -140,7 +146,7 @@ if (environment == "dev") {
   const transpiler = new Bun.Transpiler({
     loader: "js",
     target: "browser",
-    minifyWhitespace: true
+    minifyWhitespace: true,
   });
 
   const populate_index_file = fs.readFileSync("src/static/populate_index.js", {

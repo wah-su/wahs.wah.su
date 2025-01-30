@@ -20,6 +20,7 @@ function randomElements(src, count) {
 }
 
 async function FetchData() {
+  let config = await get("/data/config.json");
   let images = await get("/data/images.json");
   // let videos = await get("/data/videos.json");
 
@@ -34,19 +35,16 @@ async function FetchData() {
   });
 
   randomElements(images, VisibleImages.length).forEach((image, idx) => {
+    const src = `${config.endpoint}/${config.bucket}/${config.prefix}/${image.src}`;
     const loader = document.getElementById(
       `index__placeholder__image-${idx + 1}-loader`
     );
     const blurImg = document.createElement("img");
     const Img = document.createElement("img");
-    blurImg.src = `https://wsrv.nl/?url=${encodeURI(image.src)}&w=16&h=16`;
+    blurImg.src = `https://wsrv.nl/?url=${encodeURI(src)}&w=16&h=16`;
     blurImg.className = "object-cover w-full h-full absolute inset-0";
-    Img.src = `https://wsrv.nl/?url=${encodeURI(image.src)}&w=256&h=256`;
-    Img.srcset = `https://wsrv.nl/?url=${encodeURI(
-      image.src
-    )}&w=256&h=256 256w, https://wsrv.nl/?url=${encodeURI(
-      image.src
-    )}&w=512&h=512 512w`;
+    Img.src = `https://wsrv.nl/?url=${encodeURI(src)}&w=256&h=256`;
+    Img.srcset = `https://wsrv.nl/?url=${encodeURI(src)}&w=256&h=256 256w, https://wsrv.nl/?url=${encodeURI(src)}&w=512&h=512 512w`;
     Img.sizes = `(max-width: 600px) 256px, 512px`;
     Img.className = "invisible object-cover w-full h-full absolute inset-0";
 
