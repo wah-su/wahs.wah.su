@@ -9,8 +9,8 @@ export default function IndexPage() {
         id="index_images"
         className="mt-4 flex overflow-x-auto sm:overflow-x-hidden sm:grid sm:grid-cols-[repeat(auto-fill,minmax(25%,1fr))] xl:grid-cols-[repeat(auto-fill,minmax(20%,1fr))] sm:items-center sm:justify-center gap-4"
       >
-        {[1, 2, 3, 4, 5, 6, 7].map((idx) => {
-          return <Placeholder key={`placeholder__image-${idx}`} idx={idx} isMobileHidden={idx > 5} />;
+        {[...Array(7).keys()].map((idx) => {
+          return <Placeholder key={`placeholder__image-${idx}`} isMobileHidden={idx > 4} />;
         })}
         <AllLink location="/images/" text="View All Images" />
       </div>

@@ -1,5 +1,4 @@
 export default function Placeholder(props: {
-  idx: string | number;
   isMobileHidden?: boolean;
 }) {
   return (
@@ -10,7 +9,7 @@ export default function Placeholder(props: {
       }`}
     >
       <div
-        id={`placeholder__image-${props.idx}-loader`}
+        data-type="placeholder__image__loader"
         className="w-full h-full absolute inset-0 bg-gray-400 opacity-30 animate-pulse z-[3]"
       ></div>
     </a>

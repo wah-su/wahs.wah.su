@@ -200,8 +200,11 @@ generateHTMLFile(
   } Videos | ${images.length + videos.length} Total`,
   [
     environment == "dev"
-      ? "/static/populate_index.js"
-      : "/static/populate_index.min.js",
+      ? "/static/renderImages.js"
+      : "/static/renderImages.min.js",
+    environment == "dev"
+      ? "/static/populateIndex.js"
+      : "/static/populateIndex.min.js",
   ],
   <IndexPage />,
   "out/index.html"
@@ -211,11 +214,7 @@ generateHTMLFile(
   "Wah-Collection/Images",
   "/images/",
   `Image page of Wah-Collection | ${images.length} Images`,
-  [
-    // environment == "dev"
-    //   ? "/static/populate_index.js"
-    //   : "/static/populate_index.min.js",
-  ],
+  [],
   // <IndexPage />,
   <p>There Should Be Red Pandas!</p>,
   "out/images/index.html"
