@@ -32,8 +32,8 @@ let videos: string[] = [];
 let config = {
   endpoint: process.env.ENDPOINT,
   bucket: process.env.BUCKET,
-  prefix: process.env.PREFIX
-}
+  prefix: process.env.PREFIX,
+};
 async function listAllObjects(bucketName: string, prefix: string) {
   let isTruncated: boolean = true;
   let continuationToken: string = "";
@@ -67,8 +67,14 @@ async function listAllObjects(bucketName: string, prefix: string) {
 if (!fs.existsSync(".cache")) fs.mkdirSync(".cache");
 if (!fs.existsSync(".cache/objects.json")) {
   log.info("Listing all objects in S3 bucket . . .");
-  await listAllObjects(process.env.BUCKET as string, process.env.PREFIX as string);
-  fs.writeFileSync(".cache/objects.json", JSON.stringify({ config, images, videos }));
+  await listAllObjects(
+    process.env.BUCKET as string,
+    process.env.PREFIX as string
+  );
+  fs.writeFileSync(
+    ".cache/objects.json",
+    JSON.stringify({ config, images, videos })
+  );
   log.info(
     `Total: ${images.length + videos.length} | ${images.length} Images | ${
       videos.length
@@ -79,7 +85,7 @@ if (!fs.existsSync(".cache/objects.json")) {
   const _cacheFile = fs.readFileSync(".cache/objects.json", {
     encoding: "utf-8",
   });
-  config = JSON.parse(_cacheFile)["config"]
+  config = JSON.parse(_cacheFile)["config"];
   images = JSON.parse(_cacheFile)["images"];
   videos = JSON.parse(_cacheFile)["videos"];
   log.info(
@@ -149,10 +155,17 @@ if (environment == "dev") {
     minifyWhitespace: true,
   });
 
-  const populate_index_file = fs.readFileSync("src/static/populate_index.js", {
-    encoding: "utf-8",
+  const files = fs.readdirSync("src/static");
+  const minify = files.filter((file) => file.endsWith(".js"));
+
+  minify.forEach((file) => {
+    const ext = file.split(".")[file.split(".").length - 1];
+    const name = file.split(".")[0];
+    const orFile = fs.readFileSync(`src/static/${file}`, {
+      encoding: "utf-8",
+    });
+    const minFile = transpiler.transformSync(orFile);
+    fs.writeFileSync(`out/static/${name}.min.${ext}`, minFile);
   });
-  const populate_index_minified = transpiler.transformSync(populate_index_file);
-  fs.writeFileSync("out/static/populate_index.min.js", populate_index_minified);
 }
 fs.writeFileSync("out/index.html", `<!DOCTYPE html>${html}`);
