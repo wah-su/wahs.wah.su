@@ -40,16 +40,16 @@ function setImagesPerPage(count) {
   localStorage.setItem("ImagesPP", count);
 }
 function getImagesPerPage() {
-  const count = localStorage.getItem("ImagesPP");
+  let count = localStorage.getItem("ImagesPP");
   const url = new URL(window.location.toString());
   const countParam = url.searchParams.get("ImagesPP");
 
   if (!count && !countParam) {
     setImagesPerPage(24);
     url.searchParams.set("ImagesPP", 24);
-    return Number(24);
+    count = Number(24);
   } else if (countParam) {
-    return Number(countParam);
+    count = Number(countParam);
   } else if (count) {
     url.searchParams.set("ImagesPP", count);
     window.history.pushState(
@@ -57,10 +57,20 @@ function getImagesPerPage() {
       `Wah-Collection/Images`,
       `?${url.searchParams.toString()}`
     );
-    return Number(count);
+    count = Number(count);
   } else {
-    return 24;
+    count = 24;
   }
+
+  const active = document.querySelectorAll(`[data-ipp="${count}"]`);
+  if (active.length > 0) {
+    active.forEach((item) => {
+      item.classList.add("underline");
+      item.classList.add("text-orange-500");
+      item.classList.add("font-bold");
+    });
+  }
+  return count;
 }
 
 function setOffset(offset) {
@@ -79,23 +89,32 @@ function getOffset() {
 }
 
 function enableNav() {
-
   function handleClickPrev() {
-    setOffset(getOffset() - getImagesPerPage())
+    setOffset(getOffset() - getImagesPerPage());
   }
 
   function handleClickNext() {
-    setOffset(getOffset() + getImagesPerPage())
+    setOffset(getOffset() + getImagesPerPage());
   }
 
-  const nav_prev = document.querySelectorAll("#nav_prev")
-  const nav_next = document.querySelectorAll("#nav_next")
+  function handleClickIpp(ipp) {
+    setImagesPerPage(ipp);
+    const url = new URL(window.location.toString());
+    url.searchParams.set("ImagesPP", ipp);
+    window.location.href = url.href;
+  }
+
+  const nav_prev = document.querySelectorAll("#nav_prev");
+  const nav_next = document.querySelectorAll("#nav_next");
+  const nav_ipp = document.querySelectorAll("#nav_ipp");
 
   nav_prev.forEach((item) => {
-    item.addEventListener('click', handleClickPrev)
-  })
+    item.addEventListener("click", handleClickPrev);
+  });
   nav_next.forEach((item) => {
-    item.addEventListener('click', handleClickNext)
-  })
-
+    item.addEventListener("click", handleClickNext);
+  });
+  nav_ipp.forEach((item) => {
+    item.addEventListener("click", () => handleClickIpp(item.dataset.ipp));
+  });
 }

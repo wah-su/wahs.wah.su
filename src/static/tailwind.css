@@ -662,9 +662,6 @@
   .grid-cols-\[repeat\(auto-fill\,minmax\(25\%\,1fr\)\)\] {
     grid-template-columns: repeat(auto-fill,minmax(25%,1fr));
   }
-  .grid-cols-\[repeat\(auto-fill\,minmax\(250px\,1fr\)\)\] {
-    grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
-  }
   .grid-cols-\[repeat\(auto-fill\,minmax\(25vw\,1fr\)\)\] {
     grid-template-columns: repeat(auto-fill,minmax(25vw,1fr));
   }
@@ -683,11 +680,17 @@
   .grid-cols-\[repeat\(auto-fill\,minmax\(50vw\,1fr\)\)\] {
     grid-template-columns: repeat(auto-fill,minmax(50vw,1fr));
   }
+  .grid-cols-\[repeat\(auto-fill\,minmax\(250px\,1fr\)\)\] {
+    grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+  }
   .flex-col {
     flex-direction: column;
   }
   .items-center {
     align-items: center;
+  }
+  .justify-around {
+    justify-content: space-around;
   }
   .justify-between {
     justify-content: space-between;
@@ -697,6 +700,9 @@
   }
   .gap-4 {
     gap: calc(var(--spacing) * 4);
+  }
+  .gap-6 {
+    gap: calc(var(--spacing) * 6);
   }
   .overflow-hidden {
     overflow: hidden;
@@ -736,6 +742,9 @@
   .object-cover {
     object-fit: cover;
   }
+  .p-2 {
+    padding: calc(var(--spacing) * 2);
+  }
   .p-4 {
     padding: calc(var(--spacing) * 4);
   }
@@ -752,15 +761,26 @@
     font-size: var(--text-4xl);
     line-height: var(--tw-leading, var(--text-4xl--line-height));
   }
+  .text-lg {
+    font-size: var(--text-lg);
+    line-height: var(--tw-leading, var(--text-lg--line-height));
+  }
   .text-xl {
     font-size: var(--text-xl);
     line-height: var(--tw-leading, var(--text-xl--line-height));
+  }
+  .font-bold {
+    --tw-font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold);
   }
   .text-\[\#140606\] {
     color: #140606;
   }
   .text-\[\#f9ebeb\] {
     color: #f9ebeb;
+  }
+  .text-orange-500 {
+    color: var(--color-orange-500);
   }
   .text-white {
     color: var(--color-white);
@@ -828,6 +848,17 @@
   .sm\:px-8 {
     @media (width >= 40rem) {
       padding-inline: calc(var(--spacing) * 8);
+    }
+  }
+  .md\:block {
+    @media (width >= 48rem) {
+      display: block;
+    }
+  }
+  .md\:text-lg {
+    @media (width >= 48rem) {
+      font-size: var(--text-lg);
+      line-height: var(--tw-leading, var(--text-lg--line-height));
     }
   }
   .lg\:text-xl {
@@ -945,6 +976,10 @@
   syntax: "*";
   inherits: false;
   initial-value: solid;
+}
+@property --tw-font-weight {
+  syntax: "*";
+  inherits: false;
 }
 @property --tw-outline-style {
   syntax: "*";
