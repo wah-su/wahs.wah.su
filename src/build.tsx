@@ -19,6 +19,7 @@ if (!fs.existsSync("out")) fs.mkdirSync("out");
 import { S3Client, ListObjectsV2Command } from "@aws-sdk/client-s3";
 import IndexPage from "./templates";
 import type { ReactNode } from "react";
+import ImagesPage from "./templates/images";
 
 const S3 = new S3Client({
   region: "auto",
@@ -132,13 +133,13 @@ function generateHTMLFile(
         url: process.env.WEB_URL as string,
         preload: [
           `${
-            environment == "prod" ? process.env.WEB_URL : "."
+            environment == "prod" ? process.env.WEB_URL : ""
           }/data/config.json`,
           `${
-            environment == "prod" ? process.env.WEB_URL : "."
+            environment == "prod" ? process.env.WEB_URL : ""
           }/data/images.json`,
           `${
-            environment == "prod" ? process.env.WEB_URL : "."
+            environment == "prod" ? process.env.WEB_URL : ""
           }/data/videos.json`,
         ],
         dns: [process.env.ENDPOINT as string, "https://wsrv.nl"],
@@ -199,9 +200,7 @@ generateHTMLFile(
     videos.length
   } Videos | ${images.length + videos.length} Total`,
   [
-    environment == "dev"
-      ? "/static/renderImages.js"
-      : "/static/renderImages.min.js",
+    environment == "dev" ? "/static/utils.js" : "/static/utils.min.js",
     environment == "dev"
       ? "/static/populateIndex.js"
       : "/static/populateIndex.min.js",
@@ -214,8 +213,12 @@ generateHTMLFile(
   "Wah-Collection/Images",
   "/images/",
   `Image page of Wah-Collection | ${images.length} Images`,
-  [],
-  // <IndexPage />,
-  <p>There Should Be Red Pandas!</p>,
+  [
+    environment == "dev" ? "/static/utils.js" : "/static/utils.min.js",
+    environment == "dev"
+      ? "/static/populateImages.js"
+      : "/static/populateImages.min.js",
+  ],
+  <ImagesPage />,
   "out/images/index.html"
 );
