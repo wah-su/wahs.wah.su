@@ -25,7 +25,7 @@ async function FetchData() {
   // let videos = await get("/data/videos.json");
 
   const Images = document.querySelectorAll(
-    '[data-type="index__placeholder__image"]'
+    '[data-type="placeholder__image"]'
   );
   const VisibleImages = [];
   Images.forEach((placeholder) => {
@@ -37,7 +37,7 @@ async function FetchData() {
   randomElements(images, VisibleImages.length).forEach((image, idx) => {
     const src = `${config.endpoint}/${config.bucket}/${config.prefix}/${image.src}`;
     const loader = document.getElementById(
-      `index__placeholder__image-${idx + 1}-loader`
+      `placeholder__image-${idx + 1}-loader`
     );
     const blurImg = document.createElement("img");
     const Img = document.createElement("img");
