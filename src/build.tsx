@@ -1,6 +1,6 @@
 import { Log } from "./utils";
 import { renderToString } from "react-dom/server";
-import IndexPage from "./templates/index";
+import Base from "./templates/base";
 import fs from "fs";
 import exec from "child_process";
 
@@ -17,6 +17,8 @@ if (!fs.existsSync("out")) fs.mkdirSync("out");
 // List Objects from S3 bucket
 
 import { S3Client, ListObjectsV2Command } from "@aws-sdk/client-s3";
+import IndexPage from "./templates";
+import type { ReactNode } from "react";
 
 const S3 = new S3Client({
   region: "auto",
@@ -106,32 +108,49 @@ if (!fs.existsSync("out/data/videos.json")) {
   fs.writeFileSync("out/data/videos.json", JSON.stringify(videos));
 }
 
-let html = renderToString(
-  <IndexPage
-    title="Wah-Collection"
-    environment={environment}
-    path="/"
-    head={{
-      description: `Home page of Wah-Collection by @radiquum | ${
-        images.length
-      } Images | ${videos.length} Videos | ${
-        images.length + videos.length
-      } Total`,
-      image: "https://s3.tebi.io/wahs.wah.su/red_panda/1928. bqiKzsaDPlw.jpg",
-      url: process.env.WEB_URL as string,
-      preload: [
-        `${environment == "prod" ? process.env.WEB_URL : "."}/data/config.json`,
-        `${environment == "prod" ? process.env.WEB_URL : "."}/data/images.json`,
-        `${environment == "prod" ? process.env.WEB_URL : "."}/data/videos.json`,
-      ],
-      dns: [process.env.ENDPOINT as string, "https://wsrv.nl"],
-      script: [
-        environment == "dev" ? "/static/dev/hotreload.js" : "",
-        environment == "dev" ? "/static/populate_index.js" : "/static/populate_index.min.js"
-      ]
-    }}
-  />
-);
+function generateHTMLFile(
+  title: string,
+  path: string,
+  description: string,
+  script: string[],
+  Element: ReactNode,
+  output: string
+) {
+  const _script = [environment == "dev" ? "/static/dev/hotreload.js" : ""];
+  script.forEach((item) => _script.push(item));
+
+  if (!fs.existsSync(`out${path}`)) fs.mkdirSync(`out${path}`);
+
+  let html = renderToString(
+    <Base
+      title={title}
+      environment={environment}
+      path={path}
+      head={{
+        description: description,
+        image: "https://s3.tebi.io/wahs.wah.su/red_panda/1928. bqiKzsaDPlw.jpg",
+        url: process.env.WEB_URL as string,
+        preload: [
+          `${
+            environment == "prod" ? process.env.WEB_URL : "."
+          }/data/config.json`,
+          `${
+            environment == "prod" ? process.env.WEB_URL : "."
+          }/data/images.json`,
+          `${
+            environment == "prod" ? process.env.WEB_URL : "."
+          }/data/videos.json`,
+        ],
+        dns: [process.env.ENDPOINT as string, "https://wsrv.nl"],
+        script: _script,
+      }}
+    >
+      {Element}
+    </Base>
+  );
+  fs.writeFileSync(output, `<!DOCTYPE html>${html}`);
+  console.log(`Generated: ${output}`);
+}
 
 fs.cpSync("src/static", "out/static", { recursive: true });
 if (environment == "dev") {
@@ -172,4 +191,32 @@ if (environment == "dev") {
     fs.writeFileSync(`out/static/${name}.min.${ext}`, minFile);
   });
 }
-fs.writeFileSync("out/index.html", `<!DOCTYPE html>${html}`);
+
+generateHTMLFile(
+  "Wah-Collection",
+  "/",
+  `Home page of Wah-Collection by @radiquum | ${images.length} Images | ${
+    videos.length
+  } Videos | ${images.length + videos.length} Total`,
+  [
+    environment == "dev"
+      ? "/static/populate_index.js"
+      : "/static/populate_index.min.js",
+  ],
+  <IndexPage />,
+  "out/index.html"
+);
+
+generateHTMLFile(
+  "Wah-Collection/Images",
+  "/images/",
+  `Image page of Wah-Collection | ${images.length} Images`,
+  [
+    // environment == "dev"
+    //   ? "/static/populate_index.js"
+    //   : "/static/populate_index.min.js",
+  ],
+  // <IndexPage />,
+  <p>There Should Be Red Pandas!</p>,
+  "out/images/index.html"
+);
