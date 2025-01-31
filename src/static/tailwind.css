@@ -557,6 +557,12 @@
   .z-\[3\] {
     z-index: 3;
   }
+  .\[grid-column\:span_2\] {
+    grid-column: span 2;
+  }
+  .\[grid-row\:span_2\] {
+    grid-row: span 2;
+  }
   .container {
     width: 100%;
     @media (width >= 40rem) {
@@ -577,6 +583,9 @@
   }
   .mx-auto {
     margin-inline: auto;
+  }
+  .my-2 {
+    margin-block: calc(var(--spacing) * 2);
   }
   .my-4 {
     margin-block: calc(var(--spacing) * 4);
@@ -611,11 +620,20 @@
   .table {
     display: table;
   }
+  .aspect-\[1\/2\] {
+    aspect-ratio: 1/2;
+  }
+  .aspect-\[2\/1\] {
+    aspect-ratio: 2/1;
+  }
   .aspect-square {
     aspect-ratio: 1 / 1;
   }
   .h-6 {
     height: calc(var(--spacing) * 6);
+  }
+  .h-8 {
+    height: calc(var(--spacing) * 8);
   }
   .h-16 {
     height: calc(var(--spacing) * 16);
@@ -625,6 +643,12 @@
   }
   .min-h-16 {
     min-height: calc(var(--spacing) * 16);
+  }
+  .min-h-48 {
+    min-height: calc(var(--spacing) * 48);
+  }
+  .w-8 {
+    width: calc(var(--spacing) * 8);
   }
   .w-16 {
     width: calc(var(--spacing) * 16);
@@ -650,36 +674,6 @@
   .resize {
     resize: both;
   }
-  .grid-cols-\[repeat\(auto-fill\,1fr\)\] {
-    grid-template-columns: repeat(auto-fill,1fr);
-  }
-  .grid-cols-\[repeat\(auto-fill\,minmax\(1fr\,1fr\)\)\] {
-    grid-template-columns: repeat(auto-fill,minmax(1fr,1fr));
-  }
-  .grid-cols-\[repeat\(auto-fill\,minmax\(5\%\,1fr\)\)\] {
-    grid-template-columns: repeat(auto-fill,minmax(5%,1fr));
-  }
-  .grid-cols-\[repeat\(auto-fill\,minmax\(25\%\,1fr\)\)\] {
-    grid-template-columns: repeat(auto-fill,minmax(25%,1fr));
-  }
-  .grid-cols-\[repeat\(auto-fill\,minmax\(25vw\,1fr\)\)\] {
-    grid-template-columns: repeat(auto-fill,minmax(25vw,1fr));
-  }
-  .grid-cols-\[repeat\(auto-fill\,minmax\(40\%\,1fr\)\)\] {
-    grid-template-columns: repeat(auto-fill,minmax(40%,1fr));
-  }
-  .grid-cols-\[repeat\(auto-fill\,minmax\(40vw\,1fr\)\)\] {
-    grid-template-columns: repeat(auto-fill,minmax(40vw,1fr));
-  }
-  .grid-cols-\[repeat\(auto-fill\,minmax\(45vw\,1fr\)\)\] {
-    grid-template-columns: repeat(auto-fill,minmax(45vw,1fr));
-  }
-  .grid-cols-\[repeat\(auto-fill\,minmax\(50\%\,1fr\)\)\] {
-    grid-template-columns: repeat(auto-fill,minmax(50%,1fr));
-  }
-  .grid-cols-\[repeat\(auto-fill\,minmax\(50vw\,1fr\)\)\] {
-    grid-template-columns: repeat(auto-fill,minmax(50vw,1fr));
-  }
   .grid-cols-\[repeat\(auto-fill\,minmax\(250px\,1fr\)\)\] {
     grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
   }
@@ -689,20 +683,20 @@
   .items-center {
     align-items: center;
   }
-  .justify-around {
-    justify-content: space-around;
-  }
   .justify-between {
     justify-content: space-between;
   }
   .justify-center {
     justify-content: center;
   }
+  .gap-1 {
+    gap: calc(var(--spacing) * 1);
+  }
+  .gap-2 {
+    gap: calc(var(--spacing) * 2);
+  }
   .gap-4 {
     gap: calc(var(--spacing) * 4);
-  }
-  .gap-6 {
-    gap: calc(var(--spacing) * 6);
   }
   .overflow-hidden {
     overflow: hidden;
@@ -751,19 +745,12 @@
   .px-4 {
     padding-inline: calc(var(--spacing) * 4);
   }
-  .py-2 {
-    padding-block: calc(var(--spacing) * 2);
-  }
   .py-4 {
     padding-block: calc(var(--spacing) * 4);
   }
   .text-4xl {
     font-size: var(--text-4xl);
     line-height: var(--tw-leading, var(--text-4xl--line-height));
-  }
-  .text-lg {
-    font-size: var(--text-lg);
-    line-height: var(--tw-leading, var(--text-lg--line-height));
   }
   .text-xl {
     font-size: var(--text-xl);
@@ -778,6 +765,15 @@
   }
   .text-\[\#f9ebeb\] {
     color: #f9ebeb;
+  }
+  .text-gray-200 {
+    color: var(--color-gray-200);
+  }
+  .text-gray-300 {
+    color: var(--color-gray-300);
+  }
+  .text-gray-400 {
+    color: var(--color-gray-400);
   }
   .text-orange-500 {
     color: var(--color-orange-500);
@@ -872,6 +868,26 @@
       display: block;
     }
   }
+  .xl\:flex {
+    @media (width >= 80rem) {
+      display: flex;
+    }
+  }
+  .xl\:hidden {
+    @media (width >= 80rem) {
+      display: none;
+    }
+  }
+  .xl\:\[grid-auto-flow\:_row_dense\] {
+    @media (width >= 80rem) {
+      grid-auto-flow:  row dense;
+    }
+  }
+  .xl\:grid-cols-\[repeat\(6\,minmax\(180px\,1fr\)\)\] {
+    @media (width >= 80rem) {
+      grid-template-columns: repeat(6,minmax(180px,1fr));
+    }
+  }
   .xl\:grid-cols-\[repeat\(auto-fill\,minmax\(20\%\,1fr\)\)\] {
     @media (width >= 80rem) {
       grid-template-columns: repeat(auto-fill,minmax(20%,1fr));
@@ -913,6 +929,28 @@
 .material-symbols--navigate-before {
   display: inline-block;
   --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='m14 18l-6-6l6-6l1.4 1.4l-4.6 4.6l4.6 4.6z'/%3E%3C/svg%3E");
+  background-color: currentColor;
+  -webkit-mask-image: var(--svg);
+  mask-image: var(--svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+.material-symbols--dashboard-rounded {
+  display: inline-block;
+  --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M14 9q-.425 0-.712-.288T13 8V4q0-.425.288-.712T14 3h6q.425 0 .713.288T21 4v4q0 .425-.288.713T20 9zM4 13q-.425 0-.712-.288T3 12V4q0-.425.288-.712T4 3h6q.425 0 .713.288T11 4v8q0 .425-.288.713T10 13zm10 8q-.425 0-.712-.288T13 20v-8q0-.425.288-.712T14 11h6q.425 0 .713.288T21 12v8q0 .425-.288.713T20 21zM4 21q-.425 0-.712-.288T3 20v-4q0-.425.288-.712T4 15h6q.425 0 .713.288T11 16v4q0 .425-.288.713T10 21z'/%3E%3C/svg%3E");
+  background-color: currentColor;
+  -webkit-mask-image: var(--svg);
+  mask-image: var(--svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+.material-symbols--grid-on {
+  display: inline-block;
+  --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M5 21h2.675v-4.675H3V19q0 .825.588 1.413T5 21m4.675 0h4.65v-4.675h-4.65zm6.65 0H19q.825 0 1.413-.587T21 19v-2.675h-4.675zM3 14.325h4.675v-4.65H3zm6.675 0h4.65v-4.65h-4.65zm6.65 0H21v-4.65h-4.675zM3 7.675h4.675V3H5q-.825 0-1.412.588T3 5zm6.675 0h4.65V3h-4.65zm6.65 0H21V5q0-.825-.587-1.412T19 3h-2.675z'/%3E%3C/svg%3E");
   background-color: currentColor;
   -webkit-mask-image: var(--svg);
   mask-image: var(--svg);

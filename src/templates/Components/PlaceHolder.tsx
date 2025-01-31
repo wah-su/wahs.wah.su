@@ -4,7 +4,7 @@ export default function Placeholder(props: {
   return (
     <a
       data-type="placeholder__image"
-      className={`relative aspect-square min-w-48 sm:min-w-auto rounded-sm overflow-hidden ${
+      className={`relative aspect-square min-w-48 min-h-48 sm:min-w-auto rounded-sm overflow-hidden ${
         props.isMobileHidden ? "hidden xl:block" : ""
       }`}
     >

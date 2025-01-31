@@ -6,6 +6,10 @@ async function get(url) {
   return await res.json();
 }
 
+function getAspect(image) {
+  return Number(image.naturalWidth / image.naturalHeight);
+}
+
 function renderImage(endpoint, bucket, prefix, isrc, iid, placeholder) {
   const src = `${endpoint}/${bucket}/${prefix}/${isrc}`;
   const loader = placeholder.querySelector(
@@ -24,16 +28,69 @@ function renderImage(endpoint, bucket, prefix, isrc, iid, placeholder) {
   Img.className = "invisible object-cover w-full h-full absolute inset-0";
   Img.loading = "lazy";
 
+  const view = getView();
+  const container = document.getElementById("images_images");
+
   placeholder.appendChild(blurImg);
   placeholder.appendChild(Img);
 
+  if (view == "masonry") {
+    container.classList.remove(
+      "xl:grid-cols-[repeat(auto-fill,minmax(20%,1fr))]"
+    );
+    container.classList.add("xl:grid-cols-[repeat(6,minmax(180px,1fr))]");
+    container.classList.add("xl:[grid-auto-flow:_row_dense]");
+
+    blurImg.addEventListener("load", () => {
+      const aspect = getAspect(blurImg);
+
+      if (aspect < 0.95) {
+        placeholder.classList.remove("aspect-square");
+        placeholder.classList.add("aspect-[1/2]");
+        placeholder.classList.add("w-full");
+        placeholder.classList.add("h-full");
+        Img.classList.add("object-cover");
+        blurImg.classList.add("object-cover");
+        placeholder.classList.add("[grid-row:span_2]");
+      } else if (aspect > 1.05) {
+        placeholder.classList.remove("aspect-square");
+        placeholder.classList.add("aspect-[2/1]");
+        placeholder.classList.add("w-full");
+        placeholder.classList.add("h-full");
+        Img.classList.add("object-cover");
+        blurImg.classList.add("object-cover");
+        placeholder.classList.add("[grid-column:span_2]");
+      }
+
+      blurImg.removeEventListener("load", this);
+    });
+  }
+
   Img.addEventListener("load", () => {
     Img.classList.remove("invisible");
-    blurImg.remove();
+    if (view == "grid") blurImg.remove();
     loader.remove();
     placeholder.href = `/image/?id=${iid}`;
     Img.removeEventListener("load", this);
   });
+}
+
+function setView(view) {
+  localStorage.setItem("view", view);
+}
+function getView() {
+  let view = localStorage.getItem("view");
+  if (!view || !["grid", "masonry"].includes(view)) {
+    setView("grid");
+    view = "grid";
+  }
+  const active = document.querySelectorAll(`[data-view="${view}"]`);
+  if (active.length > 0) {
+    active.forEach((item) => {
+      item.classList.add("text-orange-500");
+    });
+  }
+  return view;
 }
 
 function setImagesPerPage(count) {
@@ -53,7 +110,7 @@ function getImagesPerPage() {
   } else if (count) {
     url.searchParams.set("ImagesPP", count);
     window.history.pushState(
-      { offset: getOffset(), ImagesPP: count },
+      "",
       `Wah-Collection/Images`,
       `?${url.searchParams.toString()}`
     );
@@ -104,9 +161,15 @@ function enableNav() {
     window.location.href = url.href;
   }
 
+  function handleClickView(view) {
+    setView(view);
+    window.location.reload();
+  }
+
   const nav_prev = document.querySelectorAll("#nav_prev");
   const nav_next = document.querySelectorAll("#nav_next");
   const nav_ipp = document.querySelectorAll("#nav_ipp");
+  const nav_view = document.querySelectorAll("#nav_view");
 
   nav_prev.forEach((item) => {
     item.addEventListener("click", handleClickPrev);
@@ -116,5 +179,8 @@ function enableNav() {
   });
   nav_ipp.forEach((item) => {
     item.addEventListener("click", () => handleClickIpp(item.dataset.ipp));
+  });
+  nav_view.forEach((item) => {
+    item.addEventListener("click", () => handleClickView(item.dataset.view));
   });
 }

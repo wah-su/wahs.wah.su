@@ -10,15 +10,25 @@ export default function PageNav() {
       <div className="flex gap-4">
         {ipp.map((item, idx) => {
             return <button key={`ipp_${item}`}
-            className={`${idx > 4 ? "hidden md:block" : ""} cursor-pointer md:text-lg lg:text-xl`}
+            className={`${idx > 4 ? "hidden md:block" : ""} cursor-pointer md:text-lg lg:text-xl text-gray-200`}
             id="nav_ipp"
             data-ipp={item}
             >{item}</button>
         })}
       </div>
-      <button className="flex justify-center items-center cursor-pointer" id="nav_next">
-        <div className="material-symbols--navigate-next w-16 h-16"></div>
-      </button>
+      <div className="flex">
+        <div className="gap-1 hidden xl:flex">
+            <button className="flex justify-center items-center cursor-pointer text-gray-200" id="nav_view" data-view="grid">
+                <div className="material-symbols--grid-on w-8 h-8"></div>
+            </button>
+            <button className="flex justify-center items-center cursor-pointer text-gray-200" id="nav_view" data-view="masonry">
+                <div className="material-symbols--dashboard-rounded w-8 h-8"></div>
+            </button>
+        </div>
+        <button className="flex justify-center items-center cursor-pointer" id="nav_next">
+            <div className="material-symbols--navigate-next w-16 h-16"></div>
+        </button>
+      </div>
     </div>
   );
 }
