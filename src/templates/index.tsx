@@ -11,6 +11,7 @@ export default function Index(props: {
     url: string;
     preload?: string[];
     dns?: string[];
+    script?: string[];
   };
 }) {
   return (
@@ -56,7 +57,6 @@ export default function Index(props: {
             </div>
           </div>
         </div>
-        <script src={props.environment == "dev" ? "/static/populate_index.js" : "/static/populate_index.min.js"}></script>
       </body>
     </html>
   );

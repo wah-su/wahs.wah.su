@@ -125,6 +125,10 @@ let html = renderToString(
         `${environment == "prod" ? process.env.WEB_URL : "."}/data/videos.json`,
       ],
       dns: [process.env.ENDPOINT as string, "https://wsrv.nl"],
+      script: [
+        environment == "dev" ? "/static/dev/hotreload.js" : "",
+        environment == "dev" ? "/static/populate_index.js" : "/static/populate_index.min.js"
+      ]
     }}
   />
 );
