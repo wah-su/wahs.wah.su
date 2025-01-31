@@ -34,7 +34,7 @@ function renderImage(endpoint, bucket, prefix, isrc, iid, placeholder) {
   placeholder.appendChild(blurImg);
   placeholder.appendChild(Img);
 
-  if (view == "masonry") {
+  if (view == "masonry" && ["/images", "/images/", "/images/index.html"].includes(window.location.pathname)) {
     container.classList.remove(
       "xl:grid-cols-[repeat(auto-fill,minmax(20%,1fr))]"
     );
