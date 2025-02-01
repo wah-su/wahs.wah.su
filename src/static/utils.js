@@ -240,40 +240,64 @@ function getOffset() {
 }
 
 function enableNav() {
-  if (
-    ["/images", "/images/", "/images/index.html"].includes(
-      window.location.pathname
-    )
-  ) {
-    function handleClickPrev() {
+  function handleClickPrev() {
+    if (
+      ["/images", "/images/", "/images/index.html"].includes(
+        window.location.pathname
+      )
+    ) {
       setOffset(getOffset() - getImagesPerPage());
-    }
-
-    function handleClickNext() {
-      setOffset(getOffset() + getImagesPerPage());
-    }
-
-    function handleClickIpp(ipp) {
-      setImagesPerPage(ipp);
-      const url = new URL(window.location.toString());
-      url.searchParams.set("ImagesPP", ipp);
-      window.location.href = url.href;
-    }
-  } else {
-    function handleClickPrev() {
+    } else if (
+      ["/videos", "/videos/", "/videos/index.html"].includes(
+        window.location.pathname
+      )
+    ) {
       setOffset(getOffset() - getVideosPerPage());
     }
+  }
 
-    function handleClickNext() {
+  function handleClickNext() {
+    if (
+      ["/images", "/images/", "/images/index.html"].includes(
+        window.location.pathname
+      )
+    ) {
+      setOffset(getOffset() + getImagesPerPage());
+    } else if (
+      ["/videos", "/videos/", "/videos/index.html"].includes(
+        window.location.pathname
+      )
+    ) {
       setOffset(getOffset() + getVideosPerPage());
     }
+  }
 
-    function handleClickIpp(ipp) {
+  function handleClickIpp(ipp) {
+    setVideosPerPage(ipp);
+    const url = new URL(window.location.toString());
+    url.searchParams.set("VideosPP", ipp);
+    window.location.href = url.href;
+  }
+
+  function handleClickIpp(ipp) {
+    const url = new URL(window.location.toString());
+
+    if (
+      ["/images", "/images/", "/images/index.html"].includes(
+        window.location.pathname
+      )
+    ) {
+      setImagesPerPage(ipp);
+      url.searchParams.set("ImagesPP", ipp);
+    } else if (
+      ["/videos", "/videos/", "/videos/index.html"].includes(
+        window.location.pathname
+      )
+    ) {
       setVideosPerPage(ipp);
-      const url = new URL(window.location.toString());
       url.searchParams.set("VideosPP", ipp);
-      window.location.href = url.href;
     }
+    window.location.href = url.href;
   }
 
   function handleClickView(view) {
