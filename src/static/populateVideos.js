@@ -3,7 +3,7 @@ function PlaceholderVid() {
   placeholder.dataset.type = "placeholder__video";
   placeholder.controls = true;
   placeholder.className =
-    "relative aspect-square w-full h-full max-w-48 max-h-48 sm:max-w-none sm:max-h-none rounded-sm [&:not(:fullscreen)]:object-cover";
+    "relative aspect-square w-full h-full rounded-sm [&:not(:fullscreen)]:object-cover";
 
   const placeholder_loader = document.createElement("div");
   placeholder_loader.dataset.type = "placeholder__video__loader";
