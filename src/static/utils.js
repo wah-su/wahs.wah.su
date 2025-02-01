@@ -9,6 +9,9 @@ async function get(url) {
 function getAspect(image) {
   return Number(image.naturalWidth / image.naturalHeight);
 }
+function getAspectVid(video) {
+  return Number(video.videoWidth / video.videoHeight);
+}
 
 function renderImage(endpoint, bucket, prefix, isrc, iid, placeholder) {
   const src = `${endpoint}/${bucket}/${prefix}/${isrc}`;
@@ -34,7 +37,12 @@ function renderImage(endpoint, bucket, prefix, isrc, iid, placeholder) {
   placeholder.appendChild(blurImg);
   placeholder.appendChild(Img);
 
-  if (view == "masonry" && ["/images", "/images/", "/images/index.html"].includes(window.location.pathname)) {
+  if (
+    view == "masonry" &&
+    ["/images", "/images/", "/images/index.html"].includes(
+      window.location.pathname
+    )
+  ) {
     container.classList.remove(
       "xl:grid-cols-[repeat(auto-fill,minmax(20%,1fr))]"
     );
@@ -73,6 +81,55 @@ function renderImage(endpoint, bucket, prefix, isrc, iid, placeholder) {
     placeholder.href = `/image/?id=${iid}`;
     Img.removeEventListener("load", this);
   });
+}
+
+function renderVideo(endpoint, bucket, prefix, vsrc, placeholder) {
+  const loader = placeholder.querySelector(
+    '[data-type="placeholder__video__loader"]'
+  );
+
+  const view = getView();
+  const container = document.getElementById("videos_videos");
+
+  const source = placeholder.querySelector("source");
+  const ext = vsrc.split(".")[vsrc.split(".").length - 1];
+  placeholder.src = `${endpoint}/${bucket}/${prefix}/${vsrc}`;
+  placeholder.preload = "metadata";
+  source.src = `${endpoint}/${bucket}/${prefix}/${vsrc}`;
+  source.type = `video/${ext}`;
+
+  if (
+    view == "masonry" &&
+    ["/videos", "/videos/", "/videos/index.html"].includes(
+      window.location.pathname
+    )
+  ) {
+    container.classList.remove(
+      "xl:grid-cols-[repeat(auto-fill,minmax(20%,1fr))]"
+    );
+    container.classList.add("xl:grid-cols-[repeat(6,minmax(180px,1fr))]");
+    container.classList.add("xl:[grid-auto-flow:_row_dense]");
+
+    placeholder.addEventListener("loadedmetadata", () => {
+      const aspect = getAspectVid(placeholder);
+
+      if (aspect < 0.95) {
+        placeholder.classList.remove("aspect-square");
+        placeholder.classList.add("aspect-[1/2]");
+        placeholder.classList.add("w-full");
+        placeholder.classList.add("h-full");
+        placeholder.classList.add("[grid-row:span_2]");
+      } else if (aspect > 1.05) {
+        placeholder.classList.remove("aspect-square");
+        placeholder.classList.add("aspect-[2/1]");
+        placeholder.classList.add("w-full");
+        placeholder.classList.add("h-full");
+        placeholder.classList.add("[grid-column:span_2]");
+      }
+
+      placeholder.removeEventListener("loadedmetadata", this);
+    });
+  }
 }
 
 function setView(view) {
@@ -130,6 +187,43 @@ function getImagesPerPage() {
   return count;
 }
 
+function setVideosPerPage(count) {
+  localStorage.setItem("VideosPP", count);
+}
+function getVideosPerPage() {
+  let count = localStorage.getItem("VideosPP");
+  const url = new URL(window.location.toString());
+  const countParam = url.searchParams.get("VideosPP");
+
+  if (!count && !countParam) {
+    setVideosPerPage(24);
+    url.searchParams.set("VideosPP", 24);
+    count = Number(24);
+  } else if (countParam) {
+    count = Number(countParam);
+  } else if (count) {
+    url.searchParams.set("VideosPP", count);
+    window.history.pushState(
+      "",
+      `Wah-Collection/Videos`,
+      `?${url.searchParams.toString()}`
+    );
+    count = Number(count);
+  } else {
+    count = 24;
+  }
+
+  const active = document.querySelectorAll(`[data-ipp="${count}"]`);
+  if (active.length > 0) {
+    active.forEach((item) => {
+      item.classList.add("underline");
+      item.classList.add("text-orange-500");
+      item.classList.add("font-bold");
+    });
+  }
+  return count;
+}
+
 function setOffset(offset) {
   const url = new URL(window.location.toString());
   url.searchParams.set("offset", offset);
@@ -146,19 +240,40 @@ function getOffset() {
 }
 
 function enableNav() {
-  function handleClickPrev() {
-    setOffset(getOffset() - getImagesPerPage());
-  }
+  if (
+    ["/images", "/images/", "/images/index.html"].includes(
+      window.location.pathname
+    )
+  ) {
+    function handleClickPrev() {
+      setOffset(getOffset() - getImagesPerPage());
+    }
 
-  function handleClickNext() {
-    setOffset(getOffset() + getImagesPerPage());
-  }
+    function handleClickNext() {
+      setOffset(getOffset() + getImagesPerPage());
+    }
 
-  function handleClickIpp(ipp) {
-    setImagesPerPage(ipp);
-    const url = new URL(window.location.toString());
-    url.searchParams.set("ImagesPP", ipp);
-    window.location.href = url.href;
+    function handleClickIpp(ipp) {
+      setImagesPerPage(ipp);
+      const url = new URL(window.location.toString());
+      url.searchParams.set("ImagesPP", ipp);
+      window.location.href = url.href;
+    }
+  } else {
+    function handleClickPrev() {
+      setOffset(getOffset() - getVideosPerPage());
+    }
+
+    function handleClickNext() {
+      setOffset(getOffset() + getVideosPerPage());
+    }
+
+    function handleClickIpp(ipp) {
+      setVideosPerPage(ipp);
+      const url = new URL(window.location.toString());
+      url.searchParams.set("VideosPP", ipp);
+      window.location.href = url.href;
+    }
   }
 
   function handleClickView(view) {

@@ -20,6 +20,7 @@ import { S3Client, ListObjectsV2Command } from "@aws-sdk/client-s3";
 import IndexPage from "./templates";
 import type { ReactNode } from "react";
 import ImagesPage from "./templates/images";
+import VideosPage from "./templates/videos";
 
 const S3 = new S3Client({
   region: "auto",
@@ -221,4 +222,18 @@ generateHTMLFile(
   ],
   <ImagesPage />,
   "out/images/index.html"
+);
+
+generateHTMLFile(
+  "Wah-Collection/Images",
+  "/videos/",
+  `Video page of Wah-Collection | ${videos.length} Videos`,
+  [
+    environment == "dev" ? "/static/utils.js" : "/static/utils.min.js",
+    environment == "dev"
+      ? "/static/populateVideos.js"
+      : "/static/populateVideos.min.js",
+  ],
+  <VideosPage />,
+  "out/videos/index.html"
 );

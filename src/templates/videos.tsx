@@ -1,14 +1,14 @@
 import PageNav from "./Components/PageNavigation";
 
-export default function ImagesPage() {
+export default function VideosPage() {
   return (
     <>
-      <PageNav path="/images"/>
+      <PageNav path="/videos"/>
       <div
-        id="images_images"
+        id="videos_videos"
         className="my-2 overflow-hidden grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] xl:grid-cols-[repeat(auto-fill,minmax(20%,1fr))] sm:items-center sm:justify-center gap-2"
       ></div>
-      <PageNav path="/images"/>
+      <PageNav path="/videos"/>
     </>
   );
 }

@@ -14,13 +14,21 @@ function randomElements(src, count) {
 async function populateIndex() {
   let config = await get("/data/config.json");
   let images = await get("/data/images.json");
-  // let videos = await get("/data/videos.json");
+  let videos = await get("/data/videos.json");
 
   const Images = document.querySelectorAll('[data-type="placeholder__image"]');
   const VisibleImages = [];
   Images.forEach((placeholder) => {
     if (placeholder.checkVisibility()) {
       VisibleImages.push(placeholder);
+    }
+  });
+
+  const Videos = document.querySelectorAll('[data-type="placeholder__video"]');
+  const VisibleVideos = [];
+  Videos.forEach((placeholder) => {
+    if (placeholder.checkVisibility()) {
+      VisibleVideos.push(placeholder);
     }
   });
 
@@ -33,6 +41,15 @@ async function populateIndex() {
       image.id,
       VisibleImages[idx]
     );
+  });
+
+  randomElements(videos, VisibleVideos.length).forEach((video, idx) => {
+    renderVideo(
+      config.endpoint,
+      config.bucket,
+      config.prefix,
+      video.src,
+      VisibleVideos[idx])
   });
 }
 window.onload = () => {
