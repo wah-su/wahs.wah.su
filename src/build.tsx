@@ -21,6 +21,7 @@ import IndexPage from "./templates";
 import type { ReactNode } from "react";
 import ImagesPage from "./templates/images";
 import VideosPage from "./templates/videos";
+import ImagePage from "./templates/viewImage";
 
 const S3 = new S3Client({
   region: "auto",
@@ -222,6 +223,17 @@ generateHTMLFile(
   ],
   <ImagesPage />,
   "out/images/index.html"
+);
+
+generateHTMLFile(
+  "Wah-Collection/Image:",
+  "/image/",
+  `View the full image on the WAH-Collection`,
+  [
+    environment == "dev" ? "/static/imagePageUtils.js" : "/static/imagePageUtils.min.js",
+  ],
+  <ImagePage />,
+  "out/image/index.html"
 );
 
 generateHTMLFile(
