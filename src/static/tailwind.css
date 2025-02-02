@@ -527,9 +527,6 @@
   .invisible {
     visibility: hidden;
   }
-  .visible {
-    visibility: visible;
-  }
   .absolute {
     position: absolute;
   }
@@ -754,9 +751,6 @@
   .bg-orange-800 {
     background-color: var(--color-orange-800);
   }
-  .bg-orange-800\/50 {
-    background-color: color-mix(in oklab, var(--color-orange-800) 50%, transparent);
-  }
   .bg-orange-950 {
     background-color: var(--color-orange-950);
   }
@@ -806,8 +800,14 @@
   .text-gray-200 {
     color: var(--color-gray-200);
   }
-  .text-orange-500 {
-    color: var(--color-orange-500);
+  .text-gray-200\/75 {
+    color: color-mix(in oklab, var(--color-gray-200) 75%, transparent);
+  }
+  .text-orange-400 {
+    color: var(--color-orange-400);
+  }
+  .text-slate-700 {
+    color: var(--color-slate-700);
   }
   .text-white {
     color: var(--color-white);
@@ -834,6 +834,13 @@
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-orange-600);
+      }
+    }
+  }
+  .hover\:text-orange-500 {
+    &:hover {
+      @media (hover: hover) {
+        color: var(--color-orange-500);
       }
     }
   }
@@ -939,14 +946,34 @@
       grid-template-columns: repeat(auto-fill,minmax(20%,1fr));
     }
   }
+  .dark\:block {
+    @media (prefers-color-scheme: dark) {
+      display: block;
+    }
+  }
+  .dark\:hidden {
+    @media (prefers-color-scheme: dark) {
+      display: none;
+    }
+  }
   .dark\:bg-\[\#160606\] {
     @media (prefers-color-scheme: dark) {
       background-color: #160606;
     }
   }
+  .dark\:bg-orange-800\/50 {
+    @media (prefers-color-scheme: dark) {
+      background-color: color-mix(in oklab, var(--color-orange-800) 50%, transparent);
+    }
+  }
   .dark\:text-\[\#f9ebeb\] {
     @media (prefers-color-scheme: dark) {
       color: #f9ebeb;
+    }
+  }
+  .dark\:text-white {
+    @media (prefers-color-scheme: dark) {
+      color: var(--color-white);
     }
   }
   .\[\&\:not\(\:fullscreen\)\]\:object-cover {
@@ -1062,6 +1089,17 @@
 .material-symbols--open-in-new {
   display: inline-block;
   --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M5 21q-.825 0-1.412-.587T3 19V5q0-.825.588-1.412T5 3h7v2H5v14h14v-7h2v7q0 .825-.587 1.413T19 21zm4.7-5.3l-1.4-1.4L17.6 5H14V3h7v7h-2V6.4z'/%3E%3C/svg%3E");
+  background-color: currentColor;
+  -webkit-mask-image: var(--svg);
+  mask-image: var(--svg);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+}
+.material-symbols--globe {
+  display: inline-block;
+  --svg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M12 22q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22m0-2q3.35 0 5.675-2.325T20 12q0-.175-.012-.363t-.013-.312q-.125.725-.675 1.2T18 13h-2q-.825 0-1.412-.587T14 11v-1h-4V8q0-.825.588-1.412T12 6h1q0-.575.313-1.012t.762-.713q-.5-.125-1.012-.2T12 4Q8.65 4 6.325 6.325T4 12h5q1.65 0 2.825 1.175T13 16v1h-3v2.75q.5.125.988.188T12 20'/%3E%3C/svg%3E");
   background-color: currentColor;
   -webkit-mask-image: var(--svg);
   mask-image: var(--svg);

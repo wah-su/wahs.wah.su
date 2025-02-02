@@ -17,17 +17,18 @@ export default function Footer() {
             <p className="text-lg">Find us on:</p>
             <a href="https://github.com/wah-su">
               <img
-                className="object-contain w-8 rounded-full aspect-square"
+                className="object-contain w-8 rounded-full aspect-square block dark:hidden"
+                src="/static/github-mark.png"
+                alt="github"
+              />
+              <img
+                className="object-contain w-8 rounded-full aspect-square hidden dark:block"
                 src="/static/github-mark-white.png"
                 alt="github"
               />
             </a>
-            <a href="https://wah.su">
-              <img
-                className="object-contain w-8 rounded-full aspect-square"
-                src="/static/captive_portal_24dp_E8EAED_FILL0_wght400_GRAD0_opsz24.png"
-                alt="website"
-              />
+            <a href="https://wah.su" className="flex items-center justify-center">
+              <div className="material-symbols--globe w-8 h-8 dark:text-white text-slate-700"></div>
             </a>
           </div>
         </div>

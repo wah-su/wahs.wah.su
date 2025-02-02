@@ -146,7 +146,7 @@ function getView() {
   const active = document.querySelectorAll(`[data-view="${view}"]`);
   if (active.length > 0) {
     active.forEach((item) => {
-      item.classList.add("text-orange-500");
+      item.classList.add("text-orange-400");
     });
   }
   return view;
@@ -182,7 +182,7 @@ function getImagesPerPage() {
   if (active.length > 0) {
     active.forEach((item) => {
       item.classList.add("underline");
-      item.classList.add("text-orange-500");
+      item.classList.add("text-orange-400");
       item.classList.add("font-bold");
     });
   }
@@ -219,7 +219,7 @@ function getVideosPerPage() {
   if (active.length > 0) {
     active.forEach((item) => {
       item.classList.add("underline");
-      item.classList.add("text-orange-500");
+      item.classList.add("text-orange-400");
       item.classList.add("font-bold");
     });
   }

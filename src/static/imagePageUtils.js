@@ -101,37 +101,37 @@ function getFit() {
   switch (fit) {
     case "contain": {
       FitContain.forEach((item) =>
-        item.classList.add("text-orange-500", "font-bold")
+        item.classList.add("text-orange-400", "font-bold")
       );
       FitCover.forEach((item) =>
-        item.classList.remove("text-orange-500", "font-bold")
+        item.classList.remove("text-orange-400", "font-bold")
       );
       FitFull.forEach((item) =>
-        item.classList.remove("text-orange-500", "font-bold")
+        item.classList.remove("text-orange-400", "font-bold")
       );
       break;
     }
     case "cover": {
       FitContain.forEach((item) =>
-        item.classList.remove("text-orange-500", "font-bold")
+        item.classList.remove("text-orange-400", "font-bold")
       );
       FitCover.forEach((item) =>
-        item.classList.add("text-orange-500", "font-bold")
+        item.classList.add("text-orange-400", "font-bold")
       );
       FitFull.forEach((item) =>
-        item.classList.remove("text-orange-500", "font-bold")
+        item.classList.remove("text-orange-400", "font-bold")
       );
       break;
     }
     case "full": {
       FitContain.forEach((item) =>
-        item.classList.remove("text-orange-500", "font-bold")
+        item.classList.remove("text-orange-400", "font-bold")
       );
       FitCover.forEach((item) =>
-        item.classList.remove("text-orange-500", "font-bold")
+        item.classList.remove("text-orange-400", "font-bold")
       );
       FitFull.forEach((item) =>
-        item.classList.add("text-orange-500", "font-bold")
+        item.classList.add("text-orange-400", "font-bold")
       );
       break;
     }

@@ -7,9 +7,9 @@ export default function PageNav(props: { path: string }) {
   }
 
   return (
-    <div className="bg-orange-800/50 rounded-sm p-2 text-white flex justify-between gap-4 items-center">
+    <div className="text-white dark:text-white bg-orange-800 dark:bg-orange-800/50 rounded-sm p-2 flex justify-between gap-4 items-center">
       <button
-        className="flex justify-center items-center cursor-pointer"
+        className="flex justify-center items-center cursor-pointer hover:text-orange-500 transition-colors"
         id="nav_prev"
       >
         <div className="material-symbols--navigate-before w-16 h-16"></div>
@@ -21,7 +21,7 @@ export default function PageNav(props: { path: string }) {
               key={`ipp_${item}`}
               className={`${
                 idx > 4 ? "hidden md:block" : ""
-              } cursor-pointer md:text-lg lg:text-xl text-gray-200`}
+              } cursor-pointer md:text-lg lg:text-xl text-gray-200/75 hover:text-orange-500 transition-colors`}
               id="nav_ipp"
               data-ipp={item}
             >
@@ -33,14 +33,14 @@ export default function PageNav(props: { path: string }) {
       <div className="flex">
         <div className="gap-1 hidden xl:flex">
           <button
-            className="flex justify-center items-center cursor-pointer text-gray-200"
+            className="flex justify-center items-center cursor-pointer text-gray-200/75 hover:text-orange-500 transition-colors"
             id="nav_view"
             data-view="grid"
           >
             <div className="material-symbols--grid-on w-8 h-8"></div>
           </button>
           <button
-            className="flex justify-center items-center cursor-pointer text-gray-200"
+            className="flex justify-center items-center cursor-pointer text-gray-200/75 hover:text-orange-500 transition-colors"
             id="nav_view"
             data-view="masonry"
           >
@@ -48,7 +48,7 @@ export default function PageNav(props: { path: string }) {
           </button>
         </div>
         <button
-          className="flex justify-center items-center cursor-pointer"
+          className="flex justify-center items-center cursor-pointer hover:text-orange-500 transition-colors"
           id="nav_next"
         >
           <div className="material-symbols--navigate-next w-16 h-16"></div>
