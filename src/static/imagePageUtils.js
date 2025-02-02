@@ -40,6 +40,7 @@ function renderImage(endpoint, bucket, prefix, isrc, placeholder) {
   const Img = document.createElement("img");
   blurImg.src = `https://wsrv.nl/?url=${encodeURI(src)}&w=16&h=16`;
   blurImg.className = "object-cover w-full h-full absolute inset-0";
+  blurImg.alt = `Loading: ${isrc}`
   Img.dataset.hi = "fit";
   Img.src = `https://wsrv.nl/?url=${encodeURI(src)}`;
   Img.className = "invisible w-full h-full object-contain";
