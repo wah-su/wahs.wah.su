@@ -23,6 +23,7 @@ function renderImage(endpoint, bucket, prefix, isrc, iid, placeholder) {
   blurImg.src = `https://wsrv.nl/?url=${encodeURI(src)}&w=16&h=16`;
   blurImg.className = "object-cover w-full h-full absolute inset-0";
   blurImg.loading = "lazy";
+  blurImg.alt = `Loading: ${isrc}`
   Img.src = `https://wsrv.nl/?url=${encodeURI(src)}&w=256&h=256`;
   Img.srcset = `https://wsrv.nl/?url=${encodeURI(
     src
@@ -30,6 +31,7 @@ function renderImage(endpoint, bucket, prefix, isrc, iid, placeholder) {
   Img.sizes = `(max-width: 600px) 256px, 512px`;
   Img.className = "invisible object-cover w-full h-full absolute inset-0";
   Img.loading = "lazy";
+  Img.alt = isrc
 
   const view = getView();
   const container = document.getElementById("images_images");

@@ -44,6 +44,7 @@ function renderImage(endpoint, bucket, prefix, isrc, placeholder) {
   Img.src = `https://wsrv.nl/?url=${encodeURI(src)}`;
   Img.className = "invisible w-full h-full object-contain";
   Img.loading = "lazy";
+  Img.alt = isrc
 
   placeholder.appendChild(blurImg);
   placeholder.appendChild(Img);
