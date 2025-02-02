@@ -18,7 +18,7 @@ export default function head(props: {
       <meta charSet="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>{props.title}</title>
-      <link rel="icon" type="image/ico" href="/favicon.ico" />
+      <link rel="icon" type="image/ico" href="/static/favicon.ico" />
       <meta property="og:title" content={props.title} />
       <meta property="og:description" content={props.description} />
       <meta property="og:type" content="website" />
