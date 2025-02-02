@@ -1,5 +1,6 @@
 import Head from "./Components/Head";
 import Header from "./Components/Header";
+import Footer from "./Components/Footer";
 
 export default function Index(props: {
   children: any;
@@ -28,6 +29,7 @@ export default function Index(props: {
         <div className="container mx-auto py-4 px-4 sm:px-8">
           {props.children}
         </div>
+        <Footer />
       </body>
     </html>
   );

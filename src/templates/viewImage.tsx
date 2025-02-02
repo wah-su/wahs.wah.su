@@ -2,7 +2,7 @@ import ImagePageNav from "./Components/ImagePageNavigation";
 
 export default function ImagePage() {
   return (
-    <div className="flex flex-col gap-4 mb-4">
+    <div className="flex flex-col gap-4">
       <ImagePageNav />
       <div
         data-type="placeholder__image"
