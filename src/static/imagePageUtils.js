@@ -65,6 +65,10 @@ async function _tmp_loadImage(iid) {
     window.location.href = "/image/?id=0";
   }
 
+  document.querySelector(
+    "title"
+  ).textContent = `WAH-Collection/Image: ${images[iid]}`;
+
   const image = images[iid];
   const placeholder = document.querySelector(
     '[data-type="placeholder__image"]'
