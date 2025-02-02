@@ -226,7 +226,7 @@ generateHTMLFile(
 );
 
 generateHTMLFile(
-  "Wah-Collection/Image:",
+  "Wah-Collection/Image",
   "/image/",
   `View the full image on the WAH-Collection`,
   [
@@ -237,7 +237,7 @@ generateHTMLFile(
 );
 
 generateHTMLFile(
-  "Wah-Collection/Images",
+  "Wah-Collection/Videos",
   "/videos/",
   `Video page of Wah-Collection | ${videos.length} Videos`,
   [
