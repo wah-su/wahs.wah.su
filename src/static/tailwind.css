@@ -527,9 +527,6 @@
   .invisible {
     visibility: hidden;
   }
-  .visible {
-    visibility: visible;
-  }
   .absolute {
     position: absolute;
   }
@@ -813,9 +810,6 @@
   .text-orange-400 {
     color: var(--color-orange-400);
   }
-  .text-slate-700 {
-    color: var(--color-slate-700);
-  }
   .text-white {
     color: var(--color-white);
   }
@@ -951,16 +945,6 @@
   .xl\:grid-cols-\[repeat\(auto-fill\,minmax\(20\%\,1fr\)\)\] {
     @media (width >= 80rem) {
       grid-template-columns: repeat(auto-fill,minmax(20%,1fr));
-    }
-  }
-  .dark\:block {
-    @media (prefers-color-scheme: dark) {
-      display: block;
-    }
-  }
-  .dark\:hidden {
-    @media (prefers-color-scheme: dark) {
-      display: none;
     }
   }
   .dark\:bg-\[\#160606\] {
