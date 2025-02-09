@@ -521,20 +521,11 @@
   }
 }
 @layer utilities {
-  .pointer-events-auto {
-    pointer-events: auto;
-  }
-  .pointer-events-none {
-    pointer-events: none;
-  }
   .collapse {
     visibility: collapse;
   }
   .invisible {
     visibility: hidden;
-  }
-  .visible {
-    visibility: visible;
   }
   .absolute {
     position: absolute;
@@ -563,41 +554,14 @@
   .right-2 {
     right: calc(var(--spacing) * 2);
   }
-  .right-8 {
-    right: calc(var(--spacing) * 8);
-  }
-  .bottom-2 {
-    bottom: calc(var(--spacing) * 2);
-  }
-  .bottom-8 {
-    bottom: calc(var(--spacing) * 8);
-  }
   .left-0 {
     left: calc(var(--spacing) * 0);
-  }
-  .z-4 {
-    z-index: 4;
-  }
-  .z-5 {
-    z-index: 5;
   }
   .z-10 {
     z-index: 10;
   }
   .z-\[3\] {
     z-index: 3;
-  }
-  .z-\[4\] {
-    z-index: 4;
-  }
-  .z-\[10\] {
-    z-index: 10;
-  }
-  .z-\[15\] {
-    z-index: 15;
-  }
-  .z-\[50\] {
-    z-index: 50;
   }
   .\[grid-column\:span_2\] {
     grid-column: span 2;
@@ -683,9 +647,6 @@
   .h-8 {
     height: calc(var(--spacing) * 8);
   }
-  .h-12 {
-    height: calc(var(--spacing) * 12);
-  }
   .h-14 {
     height: calc(var(--spacing) * 14);
   }
@@ -709,9 +670,6 @@
   }
   .w-8 {
     width: calc(var(--spacing) * 8);
-  }
-  .w-12 {
-    width: calc(var(--spacing) * 12);
   }
   .w-14 {
     width: calc(var(--spacing) * 14);
@@ -809,9 +767,6 @@
   .bg-gray-400\/50 {
     background-color: color-mix(in oklab, var(--color-gray-400) 50%, transparent);
   }
-  .bg-gray-600 {
-    background-color: var(--color-gray-600);
-  }
   .bg-orange-800 {
     background-color: var(--color-orange-800);
   }
@@ -868,26 +823,14 @@
   .text-\[\#faebeb\] {
     color: #faebeb;
   }
-  .text-gray-100 {
-    color: var(--color-gray-100);
-  }
   .text-gray-200 {
     color: var(--color-gray-200);
   }
   .text-gray-200\/75 {
     color: color-mix(in oklab, var(--color-gray-200) 75%, transparent);
   }
-  .text-gray-300 {
-    color: var(--color-gray-300);
-  }
-  .text-gray-500 {
-    color: var(--color-gray-500);
-  }
   .text-orange-400 {
     color: var(--color-orange-400);
-  }
-  .text-slate-900 {
-    color: var(--color-slate-900);
   }
   .text-white {
     color: var(--color-white);

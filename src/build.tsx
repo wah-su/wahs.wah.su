@@ -153,7 +153,7 @@ function generateHTMLFile(
     </Base>
   );
   fs.writeFileSync(output, `<!DOCTYPE html>${html}`);
-  console.log(`Generated: ${output}`);
+  log.info(`Generated: ${output}`);
 }
 
 fs.cpSync("src/static", "out/static", { recursive: true });

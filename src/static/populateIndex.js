@@ -90,7 +90,6 @@ async function populateIndex() {
             pl
           );
         }, 250);
-        console.log("video not supported");
       }
     });
     if (favs.length >= 11) {

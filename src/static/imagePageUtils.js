@@ -170,7 +170,6 @@ function _tmp_loadNav(url, iid) {
       unfavoriteButton.forEach((item) => item.classList.add("hidden"));
     });
   });
-  console.log(isFav)
   if (!isFav) {
     favoriteButton.forEach((item) => item.classList.remove("hidden"));
   } else {
