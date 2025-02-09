@@ -19,13 +19,15 @@ async function __tmp_loadVideos() {
 
   videos.slice(start, end).forEach((video, idx) => {
     container.appendChild(PlaceholderVid());
-    let videos = document.querySelectorAll('[data-type="placeholder__video"]');
+    let videos = document.querySelectorAll('[data-type="placeholder__video__container"]');
+    const vid = Number(start) + Number(idx);
     setTimeout(() => {
       renderVideo(
         config.endpoint,
         config.bucket,
         config.prefix,
         video,
+        vid,
         videos[idx]
       );
     }, 250);

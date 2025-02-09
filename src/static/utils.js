@@ -50,7 +50,7 @@ function renderImage(endpoint, bucket, prefix, isrc, iid, placeholderRoot) {
     unfavoriteButton.classList.remove("hidden");
   });
   unfavoriteButton.addEventListener("click", () => {
-    removeFavorites(iid);
+    removeFavorites(iid, "image");
     favoriteButton.classList.remove("hidden");
     unfavoriteButton.classList.add("hidden");
   });
@@ -61,7 +61,9 @@ function renderImage(endpoint, bucket, prefix, isrc, iid, placeholderRoot) {
   }
 
   const view = getView();
-  const container = document.getElementById("images_images") || document.getElementById("favorites_favorites");
+  const container =
+    document.getElementById("images_images") ||
+    document.getElementById("favorites_favorites");
 
   placeholderImage.appendChild(blurImg);
   placeholderImage.appendChild(Img);
@@ -117,26 +119,59 @@ function renderImage(endpoint, bucket, prefix, isrc, iid, placeholderRoot) {
   });
 }
 
-function renderVideo(endpoint, bucket, prefix, vsrc, placeholder) {
-  const loader = placeholder.querySelector(
+function renderVideo(endpoint, bucket, prefix, vsrc, vid, placeholderRoot) {
+  const placeholderVid = placeholderRoot.querySelector(
+    '[data-type="placeholder__video"]'
+  );
+  const placeholderVidLoader = placeholderVid.querySelector(
     '[data-type="placeholder__video__loader"]'
+  );
+  const favoriteButton = placeholderRoot.querySelector(
+    '[data-type="video__fav"]'
+  );
+  const unfavoriteButton = placeholderRoot.querySelector(
+    '[data-type="video__unfav"]'
   );
 
   const view = getView();
-  const container = document.getElementById("videos_videos");
+  const container =
+    document.getElementById("videos_videos") ||
+    document.getElementById("favorites_favorites");
 
-  const source = placeholder.querySelector("source");
+  const source = placeholderVid.querySelector("source");
   const ext = vsrc.split(".")[vsrc.split(".").length - 1];
-  placeholder.src = `${endpoint}/${bucket}/${prefix}/${vsrc}`;
-  placeholder.preload = "metadata";
+  placeholderVid.src = `${endpoint}/${bucket}/${prefix}/${vsrc}`;
+  placeholderVid.preload = "metadata";
   source.src = `${endpoint}/${bucket}/${prefix}/${vsrc}`;
   source.type = `video/${ext}`;
 
+  const isFav = getFavorites().find((el) => el.vid == vid) || false;
+  favoriteButton.addEventListener("click", () => {
+    addFavorites(vid, "video");
+    favoriteButton.classList.add("hidden");
+    unfavoriteButton.classList.remove("hidden");
+  });
+  unfavoriteButton.addEventListener("click", () => {
+    removeFavorites(vid, "video");
+    favoriteButton.classList.remove("hidden");
+    unfavoriteButton.classList.add("hidden");
+  });
+  if (!isFav) {
+    favoriteButton.classList.remove("hidden");
+  } else {
+    unfavoriteButton.classList.remove("hidden");
+  }
+
   if (
     view == "masonry" &&
-    ["/videos", "/videos/", "/videos/index.html"].includes(
-      window.location.pathname
-    )
+    [
+      "/videos",
+      "/videos/",
+      "/videos/index.html",
+      "/favorites",
+      "/favorites/",
+      "/favorites/index.html",
+    ].includes(window.location.pathname)
   ) {
     container.classList.remove(
       "xl:grid-cols-[repeat(auto-fill,minmax(20%,1fr))]"
@@ -144,24 +179,34 @@ function renderVideo(endpoint, bucket, prefix, vsrc, placeholder) {
     container.classList.add("xl:grid-cols-[repeat(6,minmax(180px,1fr))]");
     container.classList.add("xl:[grid-auto-flow:_row_dense]");
 
-    placeholder.addEventListener("loadedmetadata", () => {
-      const aspect = getAspectVid(placeholder);
+    placeholderVid.addEventListener("loadedmetadata", () => {
+      const aspect = getAspectVid(placeholderVid);
 
       if (aspect < 0.95) {
-        placeholder.classList.remove("aspect-square");
-        placeholder.classList.add("aspect-[1/2]");
-        placeholder.classList.add("w-full");
-        placeholder.classList.add("h-full");
-        placeholder.classList.add("[grid-row:span_2]");
+        placeholderVid.classList.remove("aspect-square");
+        placeholderRoot.classList.remove("aspect-square");
+        placeholderVid.classList.add("aspect-[1/2]");
+        placeholderRoot.classList.add("aspect-[1/2]");
+        placeholderVid.classList.add("w-full");
+        placeholderRoot.classList.add("w-full");
+        placeholderVid.classList.add("h-full");
+        placeholderRoot.classList.add("h-full");
+        placeholderVid.classList.add("[grid-row:span_2]");
+        placeholderRoot.classList.add("[grid-row:span_2]");
       } else if (aspect > 1.05) {
-        placeholder.classList.remove("aspect-square");
-        placeholder.classList.add("aspect-[2/1]");
-        placeholder.classList.add("w-full");
-        placeholder.classList.add("h-full");
-        placeholder.classList.add("[grid-column:span_2]");
+        placeholderVid.classList.remove("aspect-square");
+        placeholderRoot.classList.remove("aspect-square");
+        placeholderVid.classList.add("aspect-[2/1]");
+        placeholderRoot.classList.add("aspect-[2/1]");
+        placeholderVid.classList.add("w-full");
+        placeholderRoot.classList.add("w-full");
+        placeholderVid.classList.add("h-full");
+        placeholderRoot.classList.add("h-full");
+        placeholderVid.classList.add("[grid-column:span_2]");
+        placeholderRoot.classList.add("[grid-column:span_2]");
       }
 
-      placeholder.removeEventListener("loadedmetadata", this);
+      placeholderVid.removeEventListener("loadedmetadata", this);
     });
   }
 }
@@ -181,16 +226,30 @@ function setFavorites(favs) {
 
 function addFavorites(iid, type) {
   const favs = getFavorites();
-  const newFav = {
-    iid,
-    type,
-  };
+  let newFav;
+  if (type == "image") {
+    newFav = {
+      iid,
+      type,
+    };
+  } else {
+    newFav = {
+      vid: iid,
+      type,
+    };
+  }
+
   const newFavs = [...favs, newFav];
   setFavorites(newFavs);
 }
 
-function removeFavorites(iid) {
-  const idx = getFavorites().findIndex((el) => el.iid == iid);
+function removeFavorites(iid, type) {
+  let idx;
+  if (type == "image") {
+    idx = getFavorites().findIndex((el) => el.iid == iid);
+  } else {
+    idx = getFavorites().findIndex((el) => el.vid == iid);
+  }
   const favs = getFavorites();
   if (idx > -1) {
     favs.splice(idx, 1);

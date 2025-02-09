@@ -29,7 +29,17 @@ async function __tmp_loadFavs() {
         );
       }, 250);
     } else {
-      console.log("video not supported");
+      pl = container.appendChild(PlaceholderVid());
+      setTimeout(() => {
+        renderVideo(
+          config.endpoint,
+          config.bucket,
+          config.prefix,
+          videos[item.vid],
+          item.vid,
+          pl
+        );
+      }, 250);
     }
   });
 }

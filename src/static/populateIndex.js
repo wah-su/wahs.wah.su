@@ -28,7 +28,9 @@ async function populateIndex() {
     }
   });
 
-  const Videos = document.querySelectorAll('[data-type="placeholder__video"]');
+  const Videos = document.querySelectorAll(
+    '[data-type="placeholder__video__container"]'
+  );
   const VisibleVideos = [];
   Videos.forEach((placeholder) => {
     if (placeholder.checkVisibility()) {
@@ -53,6 +55,7 @@ async function populateIndex() {
       config.bucket,
       config.prefix,
       video.src,
+      video.id,
       VisibleVideos[idx]
     );
   });
@@ -76,6 +79,17 @@ async function populateIndex() {
           );
         }, 250);
       } else {
+        pl = FavoritesContainer.appendChild(PlaceholderVid());
+        setTimeout(() => {
+          renderVideo(
+            config.endpoint,
+            config.bucket,
+            config.prefix,
+            videos[item.vid],
+            item.vid,
+            pl
+          );
+        }, 250);
         console.log("video not supported");
       }
     });
