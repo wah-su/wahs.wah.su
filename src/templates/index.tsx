@@ -23,7 +23,7 @@ export default function IndexPage() {
       <p className="text-4xl text-white dark:text-white bg-orange-800 dark:bg-orange-800/50 rounded-sm p-4">Videos</p>
       <div
         id="index_videos"
-        className="mt-2 flex overflow-x-auto sm:overflow-x-hidden sm:grid sm:grid-cols-[repeat(auto-fill,minmax(25%,1fr))] xl:grid-cols-[repeat(auto-fill,minmax(20%,1fr))] sm:items-center sm:justify-center gap-2"
+        className="mt-2 mb-4 flex overflow-x-auto sm:overflow-x-hidden sm:grid sm:grid-cols-[repeat(auto-fill,minmax(25%,1fr))] xl:grid-cols-[repeat(auto-fill,minmax(20%,1fr))] sm:items-center sm:justify-center gap-2"
       >
         {[...Array(3).keys()].map((idx) => {
           return (
@@ -34,6 +34,13 @@ export default function IndexPage() {
           );
         })}
         <AllLink location="/videos/" text="View All Videos" />
+      </div>
+      <p className="text-4xl text-white dark:text-white bg-orange-800 dark:bg-orange-800/50 rounded-sm p-4">Favorites</p>
+      <div
+        id="index_favorites"
+        className="mt-2 flex overflow-x-auto sm:overflow-x-hidden sm:grid sm:grid-cols-[repeat(auto-fill,minmax(25%,1fr))] xl:grid-cols-[repeat(auto-fill,minmax(20%,1fr))] sm:items-center sm:justify-center gap-2"
+      >
+        <p className="text-2xl mx-auto col-span-full">You have not added any Favorites</p>
       </div>
     </div>
   );

@@ -22,6 +22,7 @@ import type { ReactNode } from "react";
 import ImagesPage from "./templates/images";
 import VideosPage from "./templates/videos";
 import ImagePage from "./templates/viewImage";
+import FavoritesPage from "./templates/favorites";
 
 const S3 = new S3Client({
   region: "auto",
@@ -202,6 +203,7 @@ generateHTMLFile(
     videos.length
   } Videos | ${images.length + videos.length} Total`,
   [
+    environment == "dev" ? "/static/Placeholders.js" : "/static/Placeholders.min.js",
     environment == "dev" ? "/static/utils.js" : "/static/utils.min.js",
     environment == "dev"
       ? "/static/populateIndex.js"
@@ -216,6 +218,7 @@ generateHTMLFile(
   "/images/",
   `Image page of Wah-Collection | ${images.length} Images`,
   [
+    environment == "dev" ? "/static/Placeholders.js" : "/static/Placeholders.min.js",
     environment == "dev" ? "/static/utils.js" : "/static/utils.min.js",
     environment == "dev"
       ? "/static/populateImages.js"
@@ -241,6 +244,7 @@ generateHTMLFile(
   "/videos/",
   `Video page of Wah-Collection | ${videos.length} Videos`,
   [
+    environment == "dev" ? "/static/Placeholders.js" : "/static/Placeholders.min.js",
     environment == "dev" ? "/static/utils.js" : "/static/utils.min.js",
     environment == "dev"
       ? "/static/populateVideos.js"
@@ -249,3 +253,19 @@ generateHTMLFile(
   <VideosPage />,
   "out/videos/index.html"
 );
+
+generateHTMLFile(
+  "Wah-Collection/Favorites",
+  "/favorites/",
+  `Your favorites of Wah-Collection`,
+  [
+    environment == "dev" ? "/static/Placeholders.js" : "/static/Placeholders.min.js",
+    environment == "dev" ? "/static/utils.js" : "/static/utils.min.js",
+    environment == "dev"
+      ? "/static/populateFavorites.js"
+      : "/static/populateFavorites.min.js",
+  ],
+  <FavoritesPage />,
+  "out/favorites/index.html"
+);
+

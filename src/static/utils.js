@@ -13,17 +13,27 @@ function getAspectVid(video) {
   return Number(video.videoWidth / video.videoHeight);
 }
 
-function renderImage(endpoint, bucket, prefix, isrc, iid, placeholder) {
+function renderImage(endpoint, bucket, prefix, isrc, iid, placeholderRoot) {
   const src = `${endpoint}/${bucket}/${prefix}/${isrc}`;
-  const loader = placeholder.querySelector(
+  const placeholderImage = placeholderRoot.querySelector(
+    '[data-type="placeholder__image"]'
+  );
+  const placeholderImageLoader = placeholderImage.querySelector(
     '[data-type="placeholder__image__loader"]'
   );
+  const favoriteButton = placeholderRoot.querySelector(
+    '[data-type="image__fav"]'
+  );
+  const unfavoriteButton = placeholderRoot.querySelector(
+    '[data-type="image__unfav"]'
+  );
+
   const blurImg = document.createElement("img");
   const Img = document.createElement("img");
   blurImg.src = `https://wsrv.nl/?url=${encodeURI(src)}&w=16&h=16`;
   blurImg.className = "object-cover w-full h-full absolute inset-0";
   blurImg.loading = "lazy";
-  blurImg.alt = `Loading: ${isrc}`
+  blurImg.alt = `Loading: ${isrc}`;
   Img.src = `https://wsrv.nl/?url=${encodeURI(src)}&w=256&h=256`;
   Img.srcset = `https://wsrv.nl/?url=${encodeURI(
     src
@@ -31,19 +41,41 @@ function renderImage(endpoint, bucket, prefix, isrc, iid, placeholder) {
   Img.sizes = `(max-width: 600px) 256px, 512px`;
   Img.className = "invisible object-cover w-full h-full absolute inset-0";
   Img.loading = "lazy";
-  Img.alt = isrc
+  Img.alt = isrc;
+
+  const isFav = getFavorites().find((el) => el.iid == iid) || false;
+  favoriteButton.addEventListener("click", () => {
+    addFavorites(iid, "image");
+    favoriteButton.classList.add("hidden");
+    unfavoriteButton.classList.remove("hidden");
+  });
+  unfavoriteButton.addEventListener("click", () => {
+    removeFavorites(iid);
+    favoriteButton.classList.remove("hidden");
+    unfavoriteButton.classList.add("hidden");
+  });
+  if (!isFav) {
+    favoriteButton.classList.remove("hidden");
+  } else {
+    unfavoriteButton.classList.remove("hidden");
+  }
 
   const view = getView();
-  const container = document.getElementById("images_images");
+  const container = document.getElementById("images_images") || document.getElementById("favorites_favorites");
 
-  placeholder.appendChild(blurImg);
-  placeholder.appendChild(Img);
+  placeholderImage.appendChild(blurImg);
+  placeholderImage.appendChild(Img);
 
   if (
     view == "masonry" &&
-    ["/images", "/images/", "/images/index.html"].includes(
-      window.location.pathname
-    )
+    [
+      "/images",
+      "/images/",
+      "/images/index.html",
+      "/favorites",
+      "/favorites/",
+      "/favorites/index.html",
+    ].includes(window.location.pathname)
   ) {
     container.classList.remove(
       "xl:grid-cols-[repeat(auto-fill,minmax(20%,1fr))]"
@@ -55,21 +87,21 @@ function renderImage(endpoint, bucket, prefix, isrc, iid, placeholder) {
       const aspect = getAspect(blurImg);
 
       if (aspect < 0.95) {
-        placeholder.classList.remove("aspect-square");
-        placeholder.classList.add("aspect-[1/2]");
-        placeholder.classList.add("w-full");
-        placeholder.classList.add("h-full");
+        placeholderRoot.classList.remove("aspect-square");
+        placeholderRoot.classList.add("aspect-[1/2]");
+        placeholderRoot.classList.add("w-full");
+        placeholderRoot.classList.add("h-full");
         Img.classList.add("object-cover");
         blurImg.classList.add("object-cover");
-        placeholder.classList.add("[grid-row:span_2]");
+        placeholderRoot.classList.add("[grid-row:span_2]");
       } else if (aspect > 1.05) {
-        placeholder.classList.remove("aspect-square");
-        placeholder.classList.add("aspect-[2/1]");
-        placeholder.classList.add("w-full");
-        placeholder.classList.add("h-full");
+        placeholderRoot.classList.remove("aspect-square");
+        placeholderRoot.classList.add("aspect-[2/1]");
+        placeholderRoot.classList.add("w-full");
+        placeholderRoot.classList.add("h-full");
         Img.classList.add("object-cover");
         blurImg.classList.add("object-cover");
-        placeholder.classList.add("[grid-column:span_2]");
+        placeholderRoot.classList.add("[grid-column:span_2]");
       }
 
       blurImg.removeEventListener("load", this);
@@ -78,9 +110,9 @@ function renderImage(endpoint, bucket, prefix, isrc, iid, placeholder) {
 
   Img.addEventListener("load", () => {
     Img.classList.remove("invisible");
-    if (view == "grid") blurImg.remove();
-    loader.remove();
-    placeholder.href = `/image/?id=${iid}`;
+    blurImg.remove();
+    placeholderImageLoader.remove();
+    placeholderImage.href = `/image/?id=${iid}`;
     Img.removeEventListener("load", this);
   });
 }
@@ -131,6 +163,38 @@ function renderVideo(endpoint, bucket, prefix, vsrc, placeholder) {
 
       placeholder.removeEventListener("loadedmetadata", this);
     });
+  }
+}
+
+function getFavorites() {
+  const favs = localStorage.getItem("favorites");
+  if (!favs) {
+    setFavorites([]);
+    return [];
+  }
+  return JSON.parse(favs);
+}
+
+function setFavorites(favs) {
+  localStorage.setItem("favorites", JSON.stringify(favs));
+}
+
+function addFavorites(iid, type) {
+  const favs = getFavorites();
+  const newFav = {
+    iid,
+    type,
+  };
+  const newFavs = [...favs, newFav];
+  setFavorites(newFavs);
+}
+
+function removeFavorites(iid) {
+  const idx = getFavorites().findIndex((el) => el.iid == iid);
+  const favs = getFavorites();
+  if (idx > -1) {
+    favs.splice(idx, 1);
+    setFavorites(favs);
   }
 }
 
@@ -244,9 +308,14 @@ function getOffset() {
 function enableNav() {
   function handleClickPrev() {
     if (
-      ["/images", "/images/", "/images/index.html"].includes(
-        window.location.pathname
-      )
+      [
+        "/images",
+        "/images/",
+        "/images/index.html",
+        "/favorites",
+        "/favorites/",
+        "/favorites/index.html",
+      ].includes(window.location.pathname)
     ) {
       setOffset(getOffset() - getImagesPerPage());
     } else if (
@@ -260,9 +329,14 @@ function enableNav() {
 
   function handleClickNext() {
     if (
-      ["/images", "/images/", "/images/index.html"].includes(
-        window.location.pathname
-      )
+      [
+        "/images",
+        "/images/",
+        "/images/index.html",
+        "/favorites",
+        "/favorites/",
+        "/favorites/index.html",
+      ].includes(window.location.pathname)
     ) {
       setOffset(getOffset() + getImagesPerPage());
     } else if (
@@ -275,19 +349,17 @@ function enableNav() {
   }
 
   function handleClickIpp(ipp) {
-    setVideosPerPage(ipp);
-    const url = new URL(window.location.toString());
-    url.searchParams.set("VideosPP", ipp);
-    window.location.href = url.href;
-  }
-
-  function handleClickIpp(ipp) {
     const url = new URL(window.location.toString());
 
     if (
-      ["/images", "/images/", "/images/index.html"].includes(
-        window.location.pathname
-      )
+      [
+        "/images",
+        "/images/",
+        "/images/index.html",
+        "/favorites",
+        "/favorites/",
+        "/favorites/index.html",
+      ].includes(window.location.pathname)
     ) {
       setImagesPerPage(ipp);
       url.searchParams.set("ImagesPP", ipp);

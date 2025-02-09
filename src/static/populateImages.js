@@ -1,19 +1,3 @@
-function Placeholder() {
-  const placeholder = document.createElement("a");
-  placeholder.dataset.type = "placeholder__image";
-  placeholder.className =
-    "relative aspect-square min-w-48 sm:min-w-auto rounded-sm overflow-hidden";
-
-  const placeholder_loader = document.createElement("div");
-  placeholder_loader.dataset.type = "placeholder__image__loader";
-  placeholder_loader.className =
-    "w-full h-full absolute inset-0 bg-gray-400 opacity-30 animate-pulse z-[3]";
-
-  placeholder.appendChild(placeholder_loader);
-
-  return placeholder;
-}
-
 async function __tmp_loadImages() {
   const container = document.getElementById("images_images");
 
@@ -35,7 +19,7 @@ async function __tmp_loadImages() {
 
   images.slice(start, end).forEach((image, idx) => {
     container.appendChild(Placeholder());
-    let Images = document.querySelectorAll('[data-type="placeholder__image"]');
+    let Images = document.querySelectorAll('[data-type="placeholder__image__container"]');
     const iid = Number(start) + Number(idx);
     setTimeout(() => {
       renderImage(

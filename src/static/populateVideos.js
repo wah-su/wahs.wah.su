@@ -1,21 +1,3 @@
-function PlaceholderVid() {
-  const placeholder = document.createElement("video");
-  placeholder.dataset.type = "placeholder__video";
-  placeholder.controls = true;
-  placeholder.className =
-    "relative aspect-square w-full h-full rounded-sm [&:not(:fullscreen)]:object-cover";
-
-  const placeholder_loader = document.createElement("div");
-  placeholder_loader.dataset.type = "placeholder__video__loader";
-  placeholder_loader.className =
-    "w-full h-full absolute inset-0 bg-gray-400 opacity-30 animate-pulse z-[3]";
-  const placeholder_source = document.createElement("source");
-  placeholder.appendChild(placeholder_loader);
-  placeholder.appendChild(placeholder_source);
-
-  return placeholder;
-}
-
 async function __tmp_loadVideos() {
   const container = document.getElementById("videos_videos");
 

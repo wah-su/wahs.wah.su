@@ -12,7 +12,7 @@ export default function PageNav(props: { path: string }) {
         className="flex justify-center items-center cursor-pointer hover:text-orange-500 transition-colors"
         id="nav_prev"
       >
-        <div className="material-symbols--navigate-before w-16 h-16"></div>
+        <div className="material-symbols--navigate-before w-14 h-14"></div>
       </button>
       <div className="flex gap-4">
         {ipp.map((item, idx) => {
@@ -51,7 +51,7 @@ export default function PageNav(props: { path: string }) {
           className="flex justify-center items-center cursor-pointer hover:text-orange-500 transition-colors"
           id="nav_next"
         >
-          <div className="material-symbols--navigate-next w-16 h-16"></div>
+          <div className="material-symbols--navigate-next w-14 h-14"></div>
         </button>
       </div>
     </div>

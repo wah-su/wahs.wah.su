@@ -40,12 +40,12 @@ function renderImage(endpoint, bucket, prefix, isrc, placeholder) {
   const Img = document.createElement("img");
   blurImg.src = `https://wsrv.nl/?url=${encodeURI(src)}&w=16&h=16`;
   blurImg.className = "object-cover w-full h-full absolute inset-0";
-  blurImg.alt = `Loading: ${isrc}`
+  blurImg.alt = `Loading: ${isrc}`;
   Img.dataset.hi = "fit";
   Img.src = `https://wsrv.nl/?url=${encodeURI(src)}`;
   Img.className = "invisible w-full h-full object-contain";
   Img.loading = "lazy";
-  Img.alt = isrc
+  Img.alt = isrc;
 
   placeholder.appendChild(blurImg);
   placeholder.appendChild(Img);
@@ -150,6 +150,33 @@ function _tmp_loadNav(url, iid) {
   const download = document.querySelectorAll("#act_download");
   const newtab = document.querySelectorAll("#act_newtab");
 
+  const favoriteButton = document.querySelectorAll('[data-type="image__fav"]');
+  const unfavoriteButton = document.querySelectorAll(
+    '[data-type="image__unfav"]'
+  );
+
+  const isFav = getFavorites().find((el) => el.iid == iid) || false;
+  favoriteButton.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      addFavorites(iid, "image");
+      favoriteButton.forEach((item) => item.classList.add("hidden"));
+      unfavoriteButton.forEach((item) => item.classList.remove("hidden"));
+    });
+  });
+  unfavoriteButton.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      removeFavorites(iid);
+      favoriteButton.forEach((item) => item.classList.remove("hidden"));
+      unfavoriteButton.forEach((item) => item.classList.add("hidden"));
+    });
+  });
+  console.log(isFav)
+  if (!isFav) {
+    favoriteButton.forEach((item) => item.classList.remove("hidden"));
+  } else {
+    unfavoriteButton.forEach((item) => item.classList.remove("hidden"));
+  }
+
   function handleClickPrev() {
     window.location.href = `/image/?id=${Number(iid) - 1}`;
   }
@@ -209,6 +236,38 @@ function _tmp_loadNav(url, iid) {
   newtab.forEach((item) => {
     item.addEventListener("click", handleClickNewTab);
   });
+}
+
+function getFavorites() {
+  const favs = localStorage.getItem("favorites");
+  if (!favs) {
+    setFavorites([]);
+    return [];
+  }
+  return JSON.parse(favs);
+}
+
+function setFavorites(favs) {
+  localStorage.setItem("favorites", JSON.stringify(favs));
+}
+
+function addFavorites(iid, type) {
+  const favs = getFavorites();
+  const newFav = {
+    iid,
+    type,
+  };
+  const newFavs = [...favs, newFav];
+  setFavorites(newFavs);
+}
+
+function removeFavorites(iid) {
+  const idx = getFavorites().findIndex((el) => el.iid == iid);
+  const favs = getFavorites();
+  if (idx > -1) {
+    favs.splice(idx, 1);
+    setFavorites(favs);
+  }
 }
 
 window.onload = () => {
