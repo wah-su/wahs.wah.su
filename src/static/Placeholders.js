@@ -37,12 +37,12 @@ function PlaceholderVid() {
   const placeholderRoot = document.createElement("div");
   placeholderRoot.dataset.type = "placeholder__video__container";
   placeholderRoot.className =
-    "relative aspect-square w-full h-full max-w-48 max-h-48 sm:max-w-none sm:max-h-none rounded-sm";
+    "relative aspect-square w-full h-full rounded-sm flex-shrink-0";
 
   const placeholderVid = document.createElement("video");
   placeholderVid.dataset.type = "placeholder__video";
   placeholderVid.className =
-    "relative aspect-square w-full h-full rounded-sm [&:not(:fullscreen)]:object-cover";
+    "w-full h-full absolute inset-0 aspect-square rounded-sm [&:not(:fullscreen)]:object-cover";
   placeholderVid.controls = true;
 
   const placeholderVidLoader = document.createElement("div");
