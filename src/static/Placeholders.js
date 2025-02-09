@@ -2,7 +2,7 @@ function Placeholder() {
   const placeholderRoot = document.createElement("div");
   placeholderRoot.dataset.type = "placeholder__image__container";
   placeholderRoot.className =
-    "relative aspect-square min-w-48 min-h-48 sm:min-w-auto rounded-sm overflow-hidden";
+    "relative aspect-square min-w-48 min-h-48 w-full h-full rounded-sm overflow-hidden ";
 
   const placeholderImage = document.createElement("a");
   placeholderImage.dataset.type = "placeholder__image";
@@ -37,7 +37,7 @@ function PlaceholderVid() {
   const placeholderRoot = document.createElement("div");
   placeholderRoot.dataset.type = "placeholder__video__container";
   placeholderRoot.className =
-    "relative aspect-square w-full h-full rounded-sm flex-shrink-0";
+    "relative aspect-square min-w-48 min-h-48 w-full h-full rounded-sm overflow-hidden ";
 
   const placeholderVid = document.createElement("video");
   placeholderVid.dataset.type = "placeholder__video";

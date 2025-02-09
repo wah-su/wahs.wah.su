@@ -2,7 +2,7 @@ export default function PlaceholderVid(props: { isMobileHidden?: boolean }) {
   return (
     <div
       data-type="placeholder__video__container"
-      className={`relative aspect-square w-full h-full max-w-48 max-h-48 sm:max-w-none sm:max-h-none rounded-sm flex-shrink-0 ${
+      className={`relative aspect-square w-full h-full max-w-48 max-h-48 sm:max-w-none sm:max-h-none rounded-sm overflow-hidden flex-shrink-0 ${
         props.isMobileHidden ? "hidden xl:block" : ""
       }`}
     >
