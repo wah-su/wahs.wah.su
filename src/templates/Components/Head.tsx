@@ -27,6 +27,7 @@ export default function head(props: {
       <meta property="og:image:type" content={mimetype} />
       <meta property="og:image:alt" content="" />
       <meta property="og:logo" content={`${props.url}/static/logo-1x.png`} />
+      <script defer data-domain="wahs.wah.su" data-api="https://a.wah.su/api/event" src="https://a.wah.su/js/script.js"></script>
       <link
         href={
           props.environment == "dev"
